@@ -1,23 +1,7 @@
 #!/bin/sh -e
 
-# file="${XDG_CONFIG_HOME:-"$HOME/.config"}/st/config.h"
-# [ -f "$file" ] && config="$file"
-# file="/etc/st/config.h"
-# [ ! "$config" ] && [ -f "$file" ] && config="$file"
-#
-# [ "$config" ] || {
-# 	echo "config.h not found"
-# 	echo "${XDG_CONFIG_HOME:-"$HOME/.config"}/st/config.h or /etc/st/config.h should have"
-# 	echo "your build-time config file!"
-# 	exit 1
-# }
-#
-# cp "$config" config.h
-
 CC=tcc make
 make PREFIX=/usr install ||: # expected failure
-
-tic -sx st.info -o "$1/usr/share/terminfo"
 
 # provide xterm (hack, for programs that check for xterm)
 ln -s st "$1/usr/bin/xterm"
