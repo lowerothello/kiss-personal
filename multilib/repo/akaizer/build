@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+mv * source.zip
+unzip -x source.zip
+chmod +x Akaizer
+
+mkdir -p "$1/usr/bin"
+cp Akaizer "$1/usr/bin/akaizer"

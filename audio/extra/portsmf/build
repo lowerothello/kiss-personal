@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+# patch -p1 < portsmf-shared.patch
+autoreconf -i
+
+./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--includedir=/usr/include/portsmf
+
+make
+make install

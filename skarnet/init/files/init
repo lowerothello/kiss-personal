@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Exit if pid is not 1
+[ $$ -eq 1 ] || exit 1
+
+# Baseinit's boot script
+/lib/init/rc.boot
+
+# Become svscan
+exec s6-svscan /var/service

@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+cd plugins/LV2
+
+cmake . \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release
+
+make
+
+# install
+mkdir -p "$1/usr/lib/lv2"
+cp -r airwindows.lv2 "$1/usr/lib/lv2/airwindows.lv2"

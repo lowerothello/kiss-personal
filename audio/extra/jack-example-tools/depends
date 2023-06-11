@@ -1,0 +1,4 @@
+meson build
+samurai build
+alsa-lib
+jack2

@@ -1,0 +1,25 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+sed 's/AC_DEFINE(\[OC_X86_64_ASM\]/#AC_DEFINE(\[OC_X86_64_ASM\]/' configure.ac > _
+mv _ configure.ac
+sed 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac > _
+mv _ configure.ac
+
+patch -p1 < libtheora-1.1.1-libpng16.patch
+patch -p1 < fix-theoraenc.patch
+
+./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib32 \
+	--disable-asm
+
+make
+make -C lib     install
+make -C include install
+make install-pkgconfigDATA
+
+rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/usr/include"

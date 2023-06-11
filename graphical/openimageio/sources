@@ -1,0 +1,3 @@
+git+https://github.com/openimageio/oiio
+git+https://github.com/openimageio/oiio-images build/testsuite/oiio-images
+

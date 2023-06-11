@@ -1,0 +1,7 @@
+glib
+gtk+4
+libxml2
+fribidi
+pcre2
+meson build
+samurai build

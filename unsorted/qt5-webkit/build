@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+patch -p0 < icu68.patch
+patch -p1 < glib-2.68.patch
+patch -p1 < qt5-webkit-python-3.9.patch
+patch -p1 < qt5-webkit-bison-3.7.patch
+patch -p1 < qtwebkit-cstdint.patch
+
+cmake -Bbuild \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DPORT=Qt \
+	-DENABLE_TOOLS=OFF
+cmake --build build
+cmake --install build

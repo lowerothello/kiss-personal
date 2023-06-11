@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+make
+make install \
+	DEST_DIR="$1" \
+	DEST_HOME=/usr \
+	DEST_MAN=/usr/share/man

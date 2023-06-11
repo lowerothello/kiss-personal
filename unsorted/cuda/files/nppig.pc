@@ -1,0 +1,8 @@
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: nppig
+Description: NVIDIA Performance Primitives - Image Processing - Geometry
+Version: 11.0
+Libs: -L${libdir} -lnppig
+Cflags: -I${includedir}

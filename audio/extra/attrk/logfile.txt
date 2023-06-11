@@ -1,0 +1,14 @@
+Log File: attrk
+Sun Jan  9 02:09:12 2022
+
+
+attrk version 1.1.1
+attrk: Copyright 2009-2011 afred steffens jr.
+based on TekTracker, Copyright 2001 billy biggs
+This is free software under the GNU GPL, for details see http://www.gnu.org.
+message number keys: I=information, W=warning, E=error
+
+E0000: .attrkrc file not found
+End time: Sun Jan  9 02:09:12 2022
+
+

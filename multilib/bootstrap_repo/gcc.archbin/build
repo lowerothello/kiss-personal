@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+for dir in *
+do
+	mv "$dir/download" "$dir.tar.zst"
+	unzstd "$dir.tar.zst"
+	cd "$1"
+	tar xf "$OLDPWD/$dir.tar"
+	cd "$OLDPWD"
+done
+
+cd "$1"
+rm .PKGINFO .MTREE .BUILDINFO

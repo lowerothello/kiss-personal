@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+mkdir -p "$1/usr/bin"
+
+for i in xdg-desktop-menu xdg-desktop-icon xdg-icon-resource xdg-mime xdg-open xdg-email xdg-screensaver
+do
+	cp "scripts/$i.in" "$1/usr/bin/$i"
+	chmod +x "$1/usr/bin/$i"
+done

@@ -1,0 +1,26 @@
+#!/bin/sh -e
+
+export CC=avr-gcc
+export AR=avr-ar
+export AS=avr-as
+export NM=avr-nm
+export RANLIB=avr-ranlib
+
+#export CC=""
+#export AS=avr-as
+#export AR_FOR_TARGET=avr-ar
+#export LD_FOR_TARGET=avr-ld
+#export OBJDUMP_FOR_TARGET=avr-objdump
+#export NM_FOR_TARGET=avr-nm
+#export RANLIB_FOR_TARGET=avr-ranlib
+#export READELF_FOR_TARGET=avr-readelf
+#export STRIP_FOR_TARGET=avr-strip
+#export AS_FOR_TARGET=avr-as
+
+./configure \
+    --prefix=/usr \
+    --build=x86_64-pc-linux-gnu \
+    --host=avr
+
+make
+make install

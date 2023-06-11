@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+prefix="$1/usr/share/waifu2x"
+
+luainstall() {
+	echo installing "${luafile##*/}"
+	install -Dm644 "$luafile" "$prefix/$luafile"
+	luajit -b "$prefix/$luafile" "$prefix/$luafile"
+}
+
+for luafile in *.lua
+do
+	luainstall
+done
+for luafile in lib/*.lua
+do
+	luainstall
+done
+
+cp -r models "$prefix/models"
+install -Dm755 "waifu2x.sh" "$1/usr/bin/waifu2x"

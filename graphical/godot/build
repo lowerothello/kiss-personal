@@ -1,0 +1,62 @@
+#!/bin/sh -ex
+
+export DESTDIR="$1"
+
+if ! command -v yasm; then (
+    cd yasm
+
+    ./configure \
+        --prefix=/
+
+    make
+    make DESTDIR="$PWD/../junk" install
+); fi
+
+export PATH="$PWD/junk/bin:$PATH"
+
+syslibs="
+icu
+libogg
+libvorbis
+libtheora
+libvorbis
+libvpx
+libwebp
+zstd
+"
+# pcre2
+# freetype-harfbuzz
+# graphite
+# libpng
+# zlib
+
+conf=""
+for lib in $syslibs; do
+    # If we have the lib already installed, theres no need to build it again.
+        case $lib in
+            freetype-harfbuzz) conf="$conf builtin_freetype=no builtin_harfbuzz=no" ;;
+            graphite) [ -e "${KISS_ROOT:-/}usr/lib/libgraphite2.so" ] && conf="$conf builtin_graphite=no" ;;
+            *) kiss list "$lib" && conf="$conf builtin_$lib=no" ;;
+    esac
+done
+
+case "$(uname)" in
+    Linux) JOBS="$(nproc)";;
+    FreeBSD | Darwin | OpenBSD) JOBS="$(sysctl -n hw.ncpu)";;
+esac
+
+# shellcheck disable=2086
+python scons/scripts/scons.py "${MAKEFLAGS:--j$JOBS}" \
+    platform=x11 \
+    target=editor \
+    execinfo=yes \
+    pulseaudio=no \
+    use_lto=yes \
+    production=yes \
+    deprecated=no \
+    bits=64 \
+    $conf
+
+mkdir -p "$1/usr/bin"
+cp bin/godot.linuxbsd.editor.x86_64 "$1/usr/bin/godot"
+chmod +x "$1/usr/bin/godot"

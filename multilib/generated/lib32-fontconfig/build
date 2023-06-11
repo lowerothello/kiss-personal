@@ -1,0 +1,33 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+# Make the build system run /bin/true to generate
+# a dummy file so our pre-generated one is used.
+sed 's/fcobjshash\.h/fcjunk.h/' src/Makefile.in > _
+mv -f _ src/Makefile.in
+
+./configure \
+    GPERF=/bin/true \
+    --prefix=/usr \
+    --localstatedir=/var \
+    --sysconfdir=/etc \
+    --with-xmldir=/etc/fonts \
+    --enable-static \
+    --disable-docs \
+    --disable-nls
+
+make
+make install
+mkdir -p "$1/usr/lib32"
+mv "$1/usr/lib/"* "$1/usr/lib32/"
+rmdir "$1/usr/lib"
+[ -d "$1/usr/lib32/pkgconfig" ] && for i in "$1/usr/lib32/pkgconfig/"*
+do
+	sed 's_/lib_/lib32_g' $i > _
+	mv _ $i
+done
+rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"
+find "$1/usr/include/" -iname "*.h" -not -name "*x86*" -exec rm -f {} \;

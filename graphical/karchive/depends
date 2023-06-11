@@ -1,0 +1,7 @@
+bzip2
+cmake make
+extra-cmake-modules make
+qt5
+xz
+zlib
+zstd

@@ -1,0 +1,23 @@
+cmake make
+atk
+bzip2
+cairo
+expat
+fontconfig
+freetype-harfbuzz
+fribidi
+gdk-pixbuf
+glib
+glu
+gtk+2
+libICE
+libX11
+libdrm
+libexecinfo
+libjpeg-turbo
+libpng
+libxcb
+mesa
+pango
+xz
+zlib

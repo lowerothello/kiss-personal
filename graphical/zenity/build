@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+meson build
+meson compile -C build
+meson install -C build --destdir="$DESTDIR"

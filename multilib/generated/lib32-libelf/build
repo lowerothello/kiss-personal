@@ -1,0 +1,37 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+patch -p1 < musl.patch
+
+# Build sometimes forces -Werror.
+export CFLAGS="$CFLAGS -Wno-error"
+
+sh ./configure \
+    --prefix=/usr \
+    --disable-symbol-versioning \
+    --disable-debuginfod \
+    --disable-libdebuginfod \
+    --disable-nls \
+    ac_cv_c99=yes # Override check for Clang.
+
+# Skip the default make target and build only what we need.
+make -C lib
+make -C libelf
+make -C libelf install
+make -C doc    install-man3
+
+mkdir -p "$1/usr/lib/pkgconfig"
+cp -f config/libelf.pc "$1/usr/lib/pkgconfig/libelf.pc"
+mkdir -p "$1/usr/lib32"
+mv "$1/usr/lib/"* "$1/usr/lib32/"
+rmdir "$1/usr/lib"
+[ -d "$1/usr/lib32/pkgconfig" ] && for i in "$1/usr/lib32/pkgconfig/"*
+do
+	sed 's_/lib_/lib32_g' $i > _
+	mv _ $i
+done
+rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"
+find "$1/usr/include/" -iname "*.h" -not -name "*x86*" -exec rm -f {} \;

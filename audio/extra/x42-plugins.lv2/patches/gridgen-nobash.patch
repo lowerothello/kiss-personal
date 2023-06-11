@@ -1,0 +1,60 @@
+--- x42-plugins-20211016.orig/stepseq.lv2/gridgen.sh
++++ x42-plugins-20211016/stepseq.lv2/gridgen.sh
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env bash
++#!/bin/sh -e
+ NOTES=$1
+ STEPS=$2
+ 
+@@ -36,7 +36,8 @@
+ 	esac
+ }
+ 
+-for ((n=1; n <= $NOTES; n++)); do
++n=1
++while [ $n -le $NOTES ]; do
+ 	# TODO musical scale
+ 	OCT=$(( ($n - 1) / 7 ))
+ 	NOT=$(twelvetet $n)
+@@ -53,14 +54,16 @@
+ 		lv2:portProperty lv2:integer
+ EOF
+ 	IDX=$(($IDX + 1))
++	n=$(($n + 1))
+ done
+ 
+ cat misc/mod_icon.head > $MODICON
+ 
+-for ((n=1; n <= $NOTES; n++)); do
++n=1
++while [ $n -le $NOTES ]; do
+ 	echo '<tr><th><div class="mod-knob-16seg-image note" mod-role="input-control-port" mod-port-symbol="note'$n'" x42-role="seq-note"></div></th>' >> $MODICON
+-	for ((s=1; s <= $STEPS; s++)); do
+-
++	s=1
++	while [ $s -le $STEPS ]; do
+ 		sed "s/@IDX@/$IDX/;s/@NOTE@/$n/g;s/@STEP@/$s/g" << EOF
+ 	] , [
+ 		a lv2:InputPort, lv2:ControlPort ;
+@@ -73,15 +76,19 @@
+ 		lv2:portProperty lv2:integer;
+ EOF
+ 		echo '<td><div class="togglebtn on" grid-col="'$s'" grid-row="'$n'" mod-widget="switch" mod-role="input-control-port" mod-port-symbol="grid_'$s'_'$n'">'$s'</div></td>' >> $MODICON
+-	  IDX=$(($IDX + 1))
++		IDX=$(($IDX + 1))
++		s=$(($s + 1))
+ 	done
+ 	echo '<td><div class="resetbutton row" grid-row="'$n'" title="Clear Note Row">C</div></td>' >> $MODICON
+ 	echo '</tr>' >> $MODICON
++	n=$(($n + 1))
+ done
+ 
+ echo '<tr><th></th>' >> $MODICON
+-for ((s=1; s <= $STEPS; s++)); do
++s=1
++while [ $s -le $STEPS ]; do
+ 	echo '<td><div class="resetbutton col" grid-col="'$s'" title="Clear Column Step:'$s'">C</div></td>' >> $MODICON
++	s=$(($s + 1))
+ done
+ echo '<td><div class="resetbutton all" title="Clear Grid">C</div></td>' >> $MODICON
+ echo '</tr>' >> $MODICON

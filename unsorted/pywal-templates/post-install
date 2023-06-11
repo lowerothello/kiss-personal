@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+echo "Run 'wal -w' or similar to regen the themes"
+echo "If this package was built as root then the themes were installed"
+echo "to the system locations, wal won't be able to see them unless you"
+echo "link them or something similar!"

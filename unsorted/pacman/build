@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+mkdir build
+meson build \
+	--prefix=/usr \
+	-Di18n=false
+
+ninja -C build
+ninja -C build install
+
+rm -r \
+	"$1/usr/share/zsh" \
+	"$1/usr/share/bash-completion"

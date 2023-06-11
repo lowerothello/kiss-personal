@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+meson setup . build \
+	-Dprefix=/usr \
+	-Dvapi=false \
+	-Ddocs=disabled
+meson compile -Cbuild
+meson install -Cbuild

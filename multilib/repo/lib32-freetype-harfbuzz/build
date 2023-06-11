@@ -1,0 +1,59 @@
+#!/bin/sh -e
+
+CC="$CC -m32"
+CXX="$CXX -m32"
+
+export LD_LIBRARY_PATH=/usr/lib32
+export CFLAGS="$CFLAGS -L$1/usr/lib32"
+export CXXFLAGS="$CXXFLAGS -L$1/usr/lib32"
+export PKG_CONFIG_LIBDIR=/usr/lib32/pkgconfig
+export PKG_CONFIG_PATH="$1/usr/lib32/pkgconfig"
+
+build_freetype() (
+	cd freetype
+
+	meson setup \
+		--prefix=/usr \
+		--libdir=/usr/lib32 \
+		-Ddefault_library=both \
+		-Dbzip2=disabled \
+		-Dzlib=disabled \
+		-Dpng=disabled \
+		"$@" \
+		. output
+
+	ninja -C output
+	ninja -C output install
+)
+
+build_harfbuzz() (
+	cd harfbuzz
+
+	meson setup \
+		--prefix=/usr \
+		--libdir=/usr/lib32 \
+		-Ddefault_library=both \
+		-Dglib=disabled \
+		-Dfreetype=enabled \
+		-Dgobject=disabled \
+		-Dcairo=disabled \
+		-Dicu=disabled \
+		-Dbenchmark=disabled \
+		-Dtests=disabled \
+		. output
+
+	ninja -C output
+	ninja -C output install
+)
+
+# Point Freetype to the Harfbuzz files.
+export CFLAGS="$CFLAGS -I$1/usr/include/harfbuzz"
+# Point Harfbuzz to the Freetype files.
+export CXXFLAGS="$CXXFLAGS -I$1/usr/include/freetype2"
+
+build_freetype -Dharfbuzz=disabled
+build_harfbuzz
+build_freetype -Dharfbuzz=enabled --reconfigure
+
+# Remove duplicates
+rm -rf "$1/usr/include"

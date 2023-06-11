@@ -1,0 +1,20 @@
+alsa-lib
+atk
+cairo
+expat
+fontconfig
+freetype-harfbuzz
+gdk-pixbuf
+glib
+gtk+2
+gtk+3
+libflac
+libogg
+libvorbis
+opus
+pango
+wxwidgets
+gettext make
+libid3tag
+wavpack
+portaudio

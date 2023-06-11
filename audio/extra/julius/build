@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix="$1/usr" \
+	--enable-words-int
+make
+
+make install

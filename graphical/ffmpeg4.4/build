@@ -1,0 +1,49 @@
+#!/bin/sh -e
+
+./configure \
+    --cc="${CC:-cc}" \
+    --cxx="${CXX:-c++}" \
+    --prefix=/usr \
+	--incdir=/usr/include/ffmpeg4.4 \
+	--libdir=/usr/lib/ffmpeg4.4 \
+    --disable-debug \
+    --disable-libxml2 \
+    --disable-static \
+    --enable-gpl \
+    --enable-libass \
+    --enable-libdrm \
+    --enable-libmp3lame \
+    --enable-libopus \
+    --enable-libvorbis \
+    --enable-libvpx \
+    --enable-libwebp \
+    --enable-libx264 \
+    --enable-libx265 \
+    --enable-libxvid \
+    --enable-nonfree \
+    --enable-openssl \
+    --enable-shared \
+    --enable-version3 \
+    --x86asmexe=nasm \
+
+make
+make install
+
+# Move libs to /usr/lib, except the .so symlinks
+for f in "$1/usr/lib/ffmpeg4.4"/*
+do
+	if [ "$f" == "*.so" ]
+	then
+		ln -srf -- "$1/usr/lib/$(readlink "$f")" "$f"
+	elif [ ! -d "$f" ]
+	then
+		mv "$f" "$1/usr/lib"
+	fi
+done
+
+rm -rf "$1/usr/share"
+rm -f \
+	"$1/usr/bin/ffplay" \
+	"$1/usr/bin/ffprobe" \
+	"$1/usr/bin/ffmpeg"
+

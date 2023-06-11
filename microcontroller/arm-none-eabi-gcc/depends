@@ -1,0 +1,4 @@
+arm-none-eabi-binutils
+bison  make
+flex   make
+zlib

@@ -1,0 +1,3 @@
+#!/bin/sh -e
+su -c "prlimit --rtprio=95 --memlock=unlimited -p $$"
+exec "$@"

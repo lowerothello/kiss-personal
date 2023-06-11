@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DBUILD_SHARED_LIBS=ON \
+	-DLIB_SUFFIX="" \
+	-Denable-ladspa=ON
+
+make
+make install

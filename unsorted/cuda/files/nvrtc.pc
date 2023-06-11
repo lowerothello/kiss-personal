@@ -1,0 +1,8 @@
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: nvrtc
+Description: A runtime compilation library for CUDA C++
+Version: 11.0
+Libs: -L${libdir} -lnvrtc
+Cflags: -I${includedir}

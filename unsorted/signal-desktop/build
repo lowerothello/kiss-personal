@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+# Allow higher Node versions
+sed 's#"node": "#&>=#' -i package.json
+yarn install --ignore-engines
+yarn generate
+yarn build
+

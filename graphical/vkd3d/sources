@@ -1,0 +1,5 @@
+git+https://github.com/HansKristian-Work/vkd3d-proton
+git+https://github.com/HansKristian-Work/dxil-spirv subprojects/dxil-spirv
+git+https://github.com/KhronosGroup/SPIRV-Headers subprojects/SPIRV-Headers
+git+https://github.com/KhronosGroup/Vulkan-Headers subprojects/Vulkan-Headers
+# https://dl.winehq.org/vkd3d/source/vkd3d-VERSION.tar.xz

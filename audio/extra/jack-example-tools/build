@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+meson --prefix=/usr build
+
+ninja -Cbuild
+
+meson install -Cbuild

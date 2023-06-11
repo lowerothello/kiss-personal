@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+meson build
+meson compile -Cbuild
+meson install -Cbuild

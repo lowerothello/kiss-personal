@@ -1,0 +1,2 @@
+#!/bin/sh -e
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/osu" dotnet "/usr/lib/osu/osu!.dll" "$@"

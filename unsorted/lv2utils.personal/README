@@ -1,0 +1,25 @@
+Some personal programs to work with lv2 plugins from shell scripts cos I'm insane
+
+lv2ports:
+	Print the ports of an lv2 plugin in a machine readable manner
+	shell equivalent: (don't use this, it trips up a LOT)
+		~ $ lv2info -p /dev/stdout "$plugin_uri" \ # print the relevant ttl to stdout (don't cat the file on disk cos one ttl file can contain headers for multiple plugins)
+			| /usr/bin/grep "lv2:index\
+				\|lv2:symbol\
+				\|lv2:AudioPort\
+				\|lv2:ControlPort\
+				\|lv2:InputPort\
+				\|lv2:OutputPort\
+				\|<http://lv2plug.in/ns/ext/atom#AtomPort>" \ # try to have context for every type of port, if full context is missing for a port then it may not be filtered out
+			| sed ':a;N;$!ba;s/;\n/ /g;s/,\n/ /g;s/\t//g;s/lv2:index //g' \ # put every line in the buffer so sed can substitute newlines
+			| grep -v "lv2:ControlPort\|<http://lv2plug.in/ns/ext/atom#AtomPort>" \ # get rid of unwanted port types
+			| grep "lv2:InputPort" \ # show only the specific type wanted (bear in mind ports have more than one type)
+			| sort -n \ # ensure the ports are in the right order (some plugins (eg. calf sidechain stuffs) do weird orders)
+			| sed 's/.*lv2:symbol "//g;s/".*//g' # trip the remaining fat to leave just the symbols
+
+		~ $ lv2ports --audioin "$plugin_uri"
+
+		lv2ports is far more reliable than the shell implementation;
+		it doesn't rely on regex parsing human-written and also generally awkward to parse files
+
+		you can't say I didn't try my hardest to do this without c

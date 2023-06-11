@@ -1,0 +1,12 @@
+pkgconf make
+python make
+scons make
+libX11
+libXcursor
+libXinerama
+libXi
+libXrandr
+mesa
+glu
+libglvnd
+alsa-lib

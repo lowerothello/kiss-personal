@@ -1,0 +1,5 @@
+ruby make
+qt5-location
+qt5-sensors
+qt5-webchannel
+hyphen

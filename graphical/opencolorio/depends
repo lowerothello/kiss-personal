@@ -1,0 +1,13 @@
+boost
+cmake make
+samurai make
+expat
+freeglut
+glew
+lcms
+mesa
+python
+pybind11
+tinyxml
+yaml-cpp
+pystring

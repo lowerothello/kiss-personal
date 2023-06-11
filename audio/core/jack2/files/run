@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+# the config files
+user="$(cat /etc/jackuser)"
+opts="$(cat /etc/jackdrc)"
+
+prlimit --rtprio=95 --memlock=unlimited -p $$
+exec su "${user:-"nobody"}" -c "jackd ${opts:-"-dalsa -dhw:0 -n4 -p1024 -r48000"}"

@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+# the degree symbol causes a build fail lol
+sed -i 's/90°/90 degrees/g' src/fim.cpp
+
+./configure --prefix=/usr --disable-exif --disable-readline CXXFLAGS="$CXXFLAGS -fpermissive"
+
+# only needed if building on a system with pkgconf available for some reason
+sed -i 's/LC_ALL=C $(YACC) $(YFLAGS) $< -o $@/LC_ALL=C $(YACC) $(YFLAGS) -o $@ $</' src/Makefile
+
+make
+make install

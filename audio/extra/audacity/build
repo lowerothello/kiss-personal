@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+cmake -Bbuild \
+	-DCMAKE_BUILD_TYPE=None \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DAUDACITY_BUILD_LEVEL=2 \
+	-Daudacity_conan_enabled=OFF \
+	-Daudacity_has_networking=OFF \
+	-Daudacity_has_crashreports=OFF \
+	-Daudacity_has_updates_check=OFF \
+	-Daudacity_has_sentry_reporting=OFF \
+	-Daudacity_lib_preference=system \
+	-Daudacity_obey_system_dependencies=ON \
+	-Daudacity_has_vst3=OFF
+
+cmake --build build
+DESTDIR="$1" cmake --install build

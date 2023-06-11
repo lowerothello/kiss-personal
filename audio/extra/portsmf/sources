@@ -1,0 +1,2 @@
+git+https://github.com/rbdannenberg/portsmf
+https://github.com/archlinux/svntogit-packages/raw/packages/portsmf/trunk/portsmf-shared.patch

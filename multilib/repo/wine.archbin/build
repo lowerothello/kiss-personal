@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+mv download pkg.tar.zst
+
+unzstd pkg.tar.zst
+
+cd "$1"
+tar xf "$OLDPWD/pkg.tar"
+rm .PKGINFO .MTREE .BUILDINFO

@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+CFLAGS="$CFLAGS -fcommon"
+cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr
+
+make
+make install

@@ -1,0 +1,5 @@
+python make
+# ffmpeg
+jack2
+libsndfile
+libsamplerate

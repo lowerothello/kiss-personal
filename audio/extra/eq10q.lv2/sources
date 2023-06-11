@@ -1,0 +1,4 @@
+https://sourceforge.net/projects/eq10q/files/eq10q-VERSION.tar.gz
+patches/0-replace_pow10.patch patches
+patches/1-lv2.patch patches
+patches/2-cmakelists.patch patches

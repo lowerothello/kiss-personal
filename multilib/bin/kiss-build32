@@ -1,0 +1,83 @@
+#!/bin/sh -e
+# Attempt to generate a 32bit version of a package
+
+# Set $KISS_LIB32_REPO in your env to write packages to a repo
+# else they will not be saved.
+
+REPODIR="${KISS_LIB32_REPO:-"/tmp/$$"}"
+
+mkdir -p "$REPODIR"
+
+gen() { # [$1 package]
+	rm -rf "$REPODIR/lib32-$1"
+
+	cp -Lr "$(kiss s "$1" | head -n1)" "$REPODIR/lib32-$1"
+	cd "$REPODIR/lib32-$1"
+
+	# BUILD
+	:>_
+	lc=0
+	while IFS= read -r line
+	do
+		lc=$((lc+1))
+		# Attempt to skip the shebang line
+		[ $lc == 2 ] && {
+			:>>_
+			echo 'CC="$CC -m32"' >>_
+			echo 'CXX="$CXX -m32"' >>_
+			echo 'export PKG_CONFIG_PATH=/usr/lib32/pkgconfig' >>_
+			echo 'export LD_LIBRARY_PATH=/usr/lib32' >>_
+			:>>_
+		}
+		echo "$line" >>_
+	done < build
+	:>>_
+	# Avoid messing with libdir (it's different for every build system)
+	echo 'mkdir -p "$1/usr/lib32"' >>_
+	echo 'mv "$1/usr/lib/"* "$1/usr/lib32/"' >>_
+	echo 'rmdir "$1/usr/lib"' >>_
+	# Since libdir is set wrong, pkgconf files have the wrong libdir
+	cat >>_ <<EOF
+[ -d "\$1/usr/lib32/pkgconfig" ] && for i in "\$1/usr/lib32/pkgconfig/"*
+do
+	sed 's_/lib_/lib32_g' \$i > _
+	mv _ \$i
+done
+EOF
+
+	# Remove common duplicates
+	echo 'rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"' >>_
+	# TODO: find -not isn't POSIX
+	echo 'find "$1/usr/include/" -iname "*.h" -not -name "*x86*" -exec rm -f {} \;' >>_
+	chmod +x _
+	mv _ build
+
+	# SOURCES
+	sed "s/PACKAGE/$1/g" sources > _
+	mv _ sources
+
+	# DEPENDS
+	echo "$1" >> depends # Depend on the 64bit version of the lib
+	# TODO: Attempt to depend on 32bit libs, not sure how to approach.
+	#       Should I assume that all non-make deps should be 32bit?
+}
+
+# TODO: group all build operations into one call to $(kiss b)
+for i in "$@"
+do
+	i="${i#lib32-}" # strip off lib32- if it's there
+	# Only rebuild if there isn't a 32bit variant or the 32bit variant is in
+	# the repodir (to update old generated libs but not overwrite other repos)
+	trypath="$(kiss s "lib32-$i" 2>/dev/null | head -n1)"
+	[ "$trypath" ] \
+		&& [ "$(dirname "$trypath")" != "$REPODIR" ] \
+		&& [ "$(dirname "$trypath")" != "/var/db/kiss/installed" ] \
+		&& {
+			# echo y
+			kiss b "lib32-$i"
+	} || {
+		# echo n
+		gen "$i"
+		kiss b
+	}
+done

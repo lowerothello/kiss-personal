@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+meson setup build \
+	-Dwayland-backend=false \
+	-Ddemos=false \
+	-Dbuild-examples=false \
+	-Dbuild-testsuite=false \
+	-Dbuild-tests=false \
+	-Dintrospection=enabled \
+	-Dprefix=/usr
+meson compile -Cbuild
+meson install -Cbuild

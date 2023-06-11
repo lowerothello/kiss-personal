@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr \
+	--disable-dependency-tracking
+
+make
+# patch out bash
+sed 's_#!/bin/bash_#!/bin/sh -e_' meterec-init-conf > _
+mv _ meterec-init-conf
+
+make install

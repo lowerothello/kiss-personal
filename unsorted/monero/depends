@@ -1,0 +1,8 @@
+boost
+cmake make
+hidapi
+libsodium
+openssl
+readline
+unbound
+zeromq

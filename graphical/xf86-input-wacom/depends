@@ -1,0 +1,5 @@
+xorg-server
+libXi
+libXrandr
+libXinerama
+xorg-util-macros

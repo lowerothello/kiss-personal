@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+echo 'Edit the runit service "/etc/sv/rju-plumbing/run" before using!'

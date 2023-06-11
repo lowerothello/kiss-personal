@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+scons "$MAKEOPTS" \
+	pulseaudio=no
+
+install -Dm755 bin/godot.linuxbsd.tools.x86_64 "$1/usr/bin/godot"
+install -Dm644 misc/dist/linux/godot.6 "$1/usr/share/man/man6/godot.6"
+install -Dm644 misc/dist/linux/org.godotengine.Godot.xml "$1/usr/share/mime/packages/org.godotengine.Godot.xml"

@@ -1,0 +1,27 @@
+#!/bin/sh -e
+
+patch -p0 < grep.patch
+patch -p1 < add-vstsdk-location-var.patch
+patch -p0 < build_linux_common.patch
+patch -p0 < sndfilexprt.patch
+
+sed -i 's@ln -sf `pwd`/bin/\* /tmp/radium_bin/ || true@@' build_linux_common.sh
+
+(
+	cd bin/packages
+	patch -p0 < build_libpds.patch
+	patch -p0 < gcc13faust3.patch
+)
+
+RADIUM_QT_VERSION=5 RADIUM_VST2SDK_PATH=/usr/include/vst36 RADIUM_BUILD_LIBXCB=0 make packages
+RADIUM_QT_VERSION=5 RADIUM_VST2SDK_PATH=/usr/include/vst36 BUILDTYPE=RELEASE ./build_linux.sh $MAKEFLAGS
+RADIUM_INSTALL_LIBXCB=0 ./install.sh "$1/opt"
+mkdir -p "$1/opt/radium/ladspa"
+
+mkdir -p "$1/usr/bin"
+cat << EOF > "$1/usr/bin/radium"
+#!/bin/sh -e
+QT_QPA_PLATFORM_PLUGIN_PATH=\$(qmake -query QT_INSTALL_PLUGINS) exec /opt/radium/radium "\$@"
+EOF
+
+chmod +x "$1/usr/bin/radium"

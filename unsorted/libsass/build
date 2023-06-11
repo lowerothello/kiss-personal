@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+autoreconf -fi
+./configure \
+	--disable-tests \
+	--disable-static \
+	--enable-shared \
+	--prefix=/usr
+
+make install

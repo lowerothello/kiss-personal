@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr \
+	--with-documentation \
+	--with-sodium \
+	--enable-static
+make
+make install
+
+cd cppver
+install -Dm644 zmq.hpp "$1/usr/include/zmq.hpp"
+install -Dm644 zmq_addon.hpp "$1/usr/include/zmq_addon.hpp"

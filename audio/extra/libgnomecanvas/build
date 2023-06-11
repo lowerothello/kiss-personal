@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+CFLAGS="$CFLAGS -lm"
+./configure \
+	--prefix=/usr
+
+make
+make install

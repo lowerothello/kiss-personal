@@ -1,0 +1,26 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+wayland="$(kiss l wayland 2>/dev/null)" || :
+[ "$wayland" ] && wayland=ON || wayland=OFF
+
+cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DBUILD_WSI_WAYLAND_SUPPORT=$wayland
+
+cmake --build .
+cmake --install .
+mkdir -p "$1/usr/lib32"
+mv "$1/usr/lib/"* "$1/usr/lib32/"
+rmdir "$1/usr/lib"
+[ -d "$1/usr/lib32/pkgconfig" ] && for i in "$1/usr/lib32/pkgconfig/"*
+do
+	sed 's_/lib_/lib32_g' $i > _
+	mv _ $i
+done
+rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"
+rm -rf 	"$1/usr/share" 	"$1/usr/include" 	"$1/usr/bin" 	"$1/etc" 	"$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"

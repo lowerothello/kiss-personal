@@ -1,0 +1,22 @@
+KISS-AUDIO
+----------
+Pro audio for KISS Linux, including rootless realtime privaledges.
+
+Requirements:
+- https://github.com/kiss-community/community
+- https://github.com/ehawkvu/kiss-xorg
+
+Repos:
+- core:  Everything up to and including a DAW (Ardour).
+- extra: A bunch of random audio-related libs and programs I use, not guarenteed to be up to date or have all their dependancies satisfied.
+
+Rootless Realtime Privaledges:
+Since KISS doesn't use pam, rootless realtime privaledges aren't easy. The only way I know of to obtain realtime privaledges is using prlimit, which needs root on each call (maybe I could setgid the binary but that sounds like a bad idea).
+The solution I've come up with is to just use a wrapper script that I provide with jack2 called rtprio. Anything that needs realtime privaledges (like ardour and most other midi programs) needs to be run inside rtprio, and the su password needs to be entered.
+
+JACK Config:
+The jackd runit service (provided by jack2) is configured via 2 files:
+- /etc/jackuser: contains the username jackd should be run as
+- /etc/jackdrc : contains the options jack should be started with (named after the ~/.jackdrc file jack sometimes creates with the same function)
+
+# vim: wrap

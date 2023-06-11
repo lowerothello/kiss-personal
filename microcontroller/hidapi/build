@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+cmake . \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DHIDAPI_WITH_HIDRAW=OFF
+
+cmake --build .
+cmake --build . --target install
+
+# don't use lib64
+mv "$1/usr/lib64" "$1/usr/lib"

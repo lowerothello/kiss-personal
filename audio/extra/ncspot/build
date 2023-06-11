@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+for i in *.patch
+do
+	patch -p1 < "$i"
+done
+
+cargo build \
+	--release \
+	--no-default-features \
+	--features "jackaudio_backend,alsa_backend"
+
+	# --locked \
+
+cargo install \
+	--root "$DESTDIR/usr" \
+	--path .

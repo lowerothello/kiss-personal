@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+mkdir -p "$1/usr/bin"
+cp osu "$1/usr/bin"
+
+dotnet publish osu.Desktop \
+	--configuration Release \
+	--runtime linux-x64 \
+	--no-self-contained
+
+mkdir -p "$1/usr/lib"
+cp -r "osu.Desktop/bin/Release/net6.0/linux-x64" "$1/usr/lib/osu"

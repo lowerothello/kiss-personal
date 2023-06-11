@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+cd libtextstyle
+./configure \
+    --prefix=/usr \
+    --disable-curses
+make
+make install

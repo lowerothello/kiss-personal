@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+./configure \
+	--disable-dependency-tracking \
+	--prefix=/usr
+
+make
+make install

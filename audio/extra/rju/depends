@@ -1,0 +1,9 @@
+jack2
+liblo make
+ncurses make
+libsamplerate make
+freeglut make
+libpng make
+libsndfile make
+mesa make
+alsa-lib make

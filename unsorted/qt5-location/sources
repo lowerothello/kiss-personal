@@ -1,0 +1,2 @@
+git+https://invent.kde.org/qt/qt/qtlocation#2a8a48e9101236f118c2c4f0d79fae9c9d7b3f2a
+git+https://invent.kde.org/qt/qt/qtlocation-mapboxgl src/3rdparty/mapbox-gl-native

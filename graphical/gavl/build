@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+sed 's|volume_test_LDADD = ../gavl/libgavl.la|volume_test_LDADD = -lm ../gavl/libgavl.la|' src/Makefile.am > _; mv _ src/Makefile.am
+sed 's|volume_test_LDADD = ../gavl/libgavl.la|volume_test_LDADD = -lm ../gavl/libgavl.la|' src/Makefile.in > _; mv _ src/Makefile.in
+sed 's/LDFLAGS="$GMERLIN_DEP_RPATH"/LDFLAGS="$LDFLAGS $GMERLIN_DEP_RPATH"/' configure > _; mv _ configure; chmod +x configure
+sed 's/LDFLAGS="$GMERLIN_DEP_RPATH"/LDFLAGS="$LDFLAGS $GMERLIN_DEP_RPATH"/' configure.ac > _; mv _ configure.ac
+
+./configure \
+	--prefix=/usr \
+	--without-doxygen
+make
+
+make install

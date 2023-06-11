@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+make arch-chroot genfstab pacstrap
+
+install -dm755 "$1/usr/bin"
+install -m755 arch-chroot "$1/usr/bin/"
+install -m755 genfstab "$1/usr/bin/"
+install -m755 pacstrap "$1/usr/bin/"

@@ -1,0 +1,5 @@
+nvidia # specifically my package, for cuda
+luajit
+# install these with luarocks
+# penlight
+# sys

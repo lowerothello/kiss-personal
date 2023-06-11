@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+echo "if python is missing gi then rebuild 'python3' and 'gtk+3' with 'gobject-introspection' installed!"
+
+meson setup builddir --prefix=/usr --buildtype=release
+
+meson compile -C builddir
+meson install -C builddir

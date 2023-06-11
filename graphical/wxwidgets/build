@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+case $(cc -dumpmachine) in
+	powerpc64le-linux-musl) ARCH=powerpc64le-musl-linux;;
+	*) ARCH=$(cc -dumpmachine);;
+esac
+
+
+# ./configure \
+# 	--prefix="$1"/usr \
+# 	--build=$ARCH \
+# 	--enable-no_deps \
+
+# make
+# make install
+
+cmake -B build-gtk3 \
+	-DCMAKE_INSTALL_PREFIX=/usr
+
+cmake --build build-gtk3
+
+cmake --install build-gtk3

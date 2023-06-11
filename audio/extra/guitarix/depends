@@ -1,0 +1,7 @@
+python make
+boost
+libsndfile
+zita-convolver
+ladspa
+gtk+2
+gtkmm2

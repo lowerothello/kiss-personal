@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+unzip vstsdk3610_11_06_2018_build_37.zip
+
+cd VST_SDK/VST2_SDK
+mkdir -p "$1/usr/include/vst36/pluginterfaces/vst2.x"
+install -m644 public.sdk/source/vst2.x/* "$1/usr/include/vst36/"
+install -m644 pluginterfaces/vst2.x/* "$1/usr/include/vst36/pluginterfaces/vst2.x/"

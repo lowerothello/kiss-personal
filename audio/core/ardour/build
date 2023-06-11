@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+# this completely pisses on kiss conventions, but i just want to compile ardour rn tbh
+git clone https://github.com/ardour/ardour
+cd ardour
+
+./waf configure \
+	--with-backends=jack \
+	--no-carbon \
+	--no-phone-home \
+	--optimize \
+	--use-external-libs \
+	--prefix=/usr \
+	--configdir=/etc
+
+./waf build
+./waf install

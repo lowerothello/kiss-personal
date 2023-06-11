@@ -1,0 +1,11 @@
+gdk-pixbuf
+glib
+libarchive
+libsoup
+meson      make
+pango
+samurai    make
+util-linux
+yaml
+json-glib
+gperf

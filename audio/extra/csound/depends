@@ -1,0 +1,10 @@
+cmake make
+alsa-lib
+curl
+fluidsynth
+# jack2
+libexecinfo
+liblo
+libsamplerate
+libsndfile
+# portmidi

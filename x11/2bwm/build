@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+file="${XDG_CONFIG_HOME:-"$HOME/.config"}/2bwm/config.h"
+[ -f "$file" ] && config="$file"
+file="/etc/2bwm/config.h"
+[ ! "$config" ] && [ -f "$file" ] && config="$file"
+
+[ "$config" ] || {
+	echo "config.h not found"
+	echo "${XDG_CONFIG_HOME:-"$HOME/.config"}/2bwm/config.h or /etc/2bwm/config.h should have"
+	echo "your build-time config file!"
+	exit 1
+}
+
+cp "$config" config.h
+
+make PREFIX=/usr
+make PREFIX=/usr install

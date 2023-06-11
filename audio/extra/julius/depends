@@ -1,0 +1,6 @@
+alsa-lib
+gcc
+libsndfile
+readline
+sdl2
+zlib

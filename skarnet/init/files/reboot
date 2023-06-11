@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Cleanly kill services
+s6-svscanctl -t /var/service
+
+# Shut down the system with baseinit
+/lib/init/rc.shutdown reboot

@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+cmake -Bbuild -GNinja \
+	-DCMAKE_INSTALL_PREFIX=/usr
+
+cmake --build build
+cmake --install build

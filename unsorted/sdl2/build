@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+./configure \
+	--disable-video-opengl \
+	--enable-video-opengles \
+	--enable-jack \
+	--enable-jack-shared \
+	--prefix=/usr
+
+make
+make install

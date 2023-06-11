@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+patch -p1 < patches/author.patch
+
+sed 's/FETCH_TIMEOUT = 10/FETCH_TIMEOUT=240/' main.go > _
+mv _ main.go
+
+go build
+
+mkdir -p "$1/usr/bin/"
+cp picofeed "$1/usr/bin/picofeed"

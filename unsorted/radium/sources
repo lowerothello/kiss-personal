@@ -1,0 +1,7 @@
+https://github.com/kmatheussen/radium/archive/VERSION.tar.gz
+patches/grep.patch
+patches/add-vstsdk-location-var.patch
+patches/build_linux_common.patch
+patches/sndfilexprt.patch
+patches/build_libpds.patch bin/packages
+patches/gcc13faust3.patch bin/packages

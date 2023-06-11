@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+meson _build \
+	--prefix=/usr \
+	-D_systemd=false
+
+ninja -C _build
+ninja -C _build install

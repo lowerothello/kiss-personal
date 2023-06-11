@@ -1,0 +1,39 @@
+boost
+cmake               make
+eigen
+exiv2
+extra-cmake-modules make
+fftw
+giflib
+gsl
+kcompletion
+kconfig
+kcoreaddons
+kguiaddons
+ki18n
+kitemmodels
+kitemviews
+kwidgetsaddons
+kwindowsystem
+lcms
+libICE
+libSM
+libX11
+libXext
+libXi
+libinput
+libjpeg
+libpng
+openjpeg2
+python              make
+qt5
+qt5-declarative
+qt5-multimedia
+qt5-svg
+qt5-tools
+qt5-x11extras
+quazip
+samurai             make
+tiff
+zlib
+openexr

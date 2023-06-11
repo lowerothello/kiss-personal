@@ -1,0 +1,32 @@
+#!/bin/sh -e
+
+export CFLAGS="$CFLAGS -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+configure="./configure --prefix=/usr --enable-shared --enable-threads"
+
+$configure --enable-sse --enable-avx --enable-single
+sed 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool > _
+mv _ libtool
+make
+make install
+make clean
+
+$configure --enable-sse2 --enable-avx
+sed 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool > _
+mv _ libtool
+make
+make install
+make clean
+
+$configure --enable-long-double
+sed 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool > _
+mv _ libtool
+make
+make install
+make clean
+
+$configure --disable-mpi --enable-quad-precision
+sed 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool > _
+mv _ libtool
+make
+make install
+make clean

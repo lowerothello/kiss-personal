@@ -1,0 +1,14 @@
+atk
+atkmm
+cairo
+cairomm
+fontconfig
+freetype-harfbuzz
+gdk-pixbuf
+glib
+glibmm
+gtk+2
+libsigc++
+pango
+pangomm
+

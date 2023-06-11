@@ -1,0 +1,6 @@
+flex	make
+bison	make
+perl	make
+libpng
+libjpeg
+giflib

@@ -1,0 +1,18 @@
+cmake make
+samurai make
+llvm make
+boost
+ffmpeg
+fftw
+freetype-harfbuzz
+gmp
+libjpeg-turbo
+libpng
+libsndfile
+lzo
+mesa
+opencolorio
+openimagedenoise
+opensubdiv
+sdl2
+zlib

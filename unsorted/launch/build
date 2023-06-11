@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+make launch
+
+mkdir -p "$DESTDIR"/usr/bin
+
+install -m755 launch "$DESTDIR"/usr/bin/launch

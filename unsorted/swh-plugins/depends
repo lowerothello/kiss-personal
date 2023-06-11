@@ -1,0 +1,4 @@
+ladspa
+autoconf make
+perl-xml-parser make
+perl-list-moreutils make

@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+./tool build --portmidi orca
+
+install -Dm755 build/orca "$1/usr/bin/orca"
+mkdir -p "$1/usr/share/doc/orca"
+cp -r examples "$1/usr/share/doc/orca/examples"

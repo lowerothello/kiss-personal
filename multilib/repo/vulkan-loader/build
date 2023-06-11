@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+wayland="$(kiss l wayland 2>/dev/null)" || :
+[ "$wayland" ] && wayland=ON || wayland=OFF
+
+cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DBUILD_WSI_WAYLAND_SUPPORT=$wayland
+
+make
+make install

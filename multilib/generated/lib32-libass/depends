@@ -1,0 +1,6 @@
+expat
+fontconfig
+freetype-harfbuzz
+nasm    make
+pkgconf make
+libass

@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+# sed -i 's/tinfo.a//' CMakeLists.txt
+# sed -i 's/tinfo//'   CMakeLists.txt
+
+sed 's:set(target_arch "i686"):return():' cmake/GenerateBuiltins.cmake > _
+mv _ cmake/GenerateBuiltins.cmake
+
+cmake -B build \
+   -DCMAKE_INSTALL_PREFIX=/usr \
+   -DCMAKE_BUILD_TYPE=Release \
+   -DISPC_INCLUDE_EXAMPLES=OFF \
+   -DISPC_INCLUDE_TESTS=OFF \
+   -DISPC_NO_DUMPS=ON \
+   -DARM_ENABLED=OFF
+
+cmake --build build
+cmake --install build

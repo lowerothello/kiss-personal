@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+sed 's/rU/r/g' waflib/Context.py >_
+mv _ waflib/Context.py
+sed 's/rU/r/g' waflib/ConfigSet.py >_
+mv _ waflib/ConfigSet.py
+
+./waf configure \
+	--prefix=/usr \
+	--disable-avcodec
+
+./waf build
+./waf install

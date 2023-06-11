@@ -1,0 +1,17 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib32 \
+	--build=i686-pc-linux-gnu \
+	--host=i686-pc-linux-gnu \
+	--disable-documentation
+
+make
+make install
+
+find "$1/usr/include/"*.h -not -name "*x86*" -exec rm -f {} \;

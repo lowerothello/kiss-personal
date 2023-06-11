@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+# patch out hardcoded /usr/local prefix
+patch -p1 < usrlocal.patch
+
+# enable jack support
+sed '/.*BUILD_JACK=1/s/^[@#] //' config.def.mk > _
+mv _ config.def.mk
+
+make
+make install

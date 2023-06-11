@@ -1,0 +1,64 @@
+#!/bin/sh -e
+
+# Remove util-linux dependency among other things.
+# cat >> Modules/Setup <<EOF
+# *disabled*
+# _uuid nis ossaudiodev
+# EOF
+
+# clean shebangs
+sed "s|^#.* /usr/local/bin/python|#!/usr/bin/python2|" Lib/cgi.py > _
+mv _ Lib/cgi.py
+# TODO: sed -i removal
+find . -name '*.py' | \
+	xargs sed -i "s|#[  ]*![  ]*/usr/bin/env python$|#!/usr/bin/env python2|"
+touch Include/Python-ast.h Python/Python-ast.c Python/opcode_targets.h
+
+# ensure system libs
+rm -r Modules/expat \
+	Modules/zlib \
+	Modules/_ctypes/darwin* \
+	Modules/_ctypes/libffi*
+
+
+# Reported 20-27% performance improvements.
+# See: "PythonNoSemanticInterpositionSpeedup"
+export CFLAGS="$CFLAGS -fno-semantic-interposition"
+export LDFLAGS="$LDFLAGS -fno-semantic-interposition"
+
+# for patch in *.patch; do
+#     patch -p1 < "$patch"
+# done
+
+./configure \
+	--prefix=/usr \
+	--enable-shared \
+	--with-system-expat \
+	--with-system-ffi \
+	--without-ensurepip \
+	--without-doc-strings \
+	--with-threads \
+	--enable-optimizations
+
+make EXTRA_CFLAGS="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"
+make install
+
+# ln -s python3 "$1/usr/bin/python"
+# ln -s pip3    "$1/usr/bin/pip"
+
+rm "$1/usr/bin/python" "$1/usr/bin/2to3"
+
+# Let's make some kind of effort to reduce the overall
+# size of Python by removing a bunch of rarely used and
+# otherwise useless components.
+#
+# This can't be done via ./configure as the build system
+# doesn't give you this much control over the process.
+{
+	cd "$1/usr/lib/python"*
+	rm -rf test ./*/test ./*/tests
+	rm -rf pydoc* idlelib config-*
+
+	cd "$1/usr/bin"
+	rm -f pydoc* idle*
+}

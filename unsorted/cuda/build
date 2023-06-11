@@ -1,0 +1,52 @@
+#!/bin/sh -e
+
+sh *.run --target . --noexec
+
+cd builds
+
+prefix=/usr/local
+mkdir -p "$1$prefix/cuda/extras"
+mv cuda_samples "$1$prefix/cuda/samples"
+mv integration nsight_compute nsight_systems EULA.txt "$1$prefix/cuda"
+mv cuda_sanitizer_api/compute-sanitizer "$1$prefix/cuda/extras/compute-sanitizer"
+rmdir cuda_sanitizer_api
+
+rm *version.json*
+cp -r */* "$1$prefix/cuda"
+
+rm -r \
+	"$1$prefix/cuda/bin/cuda-uninstaller" \
+	"$1$prefix/cuda/samples/bin/cuda-uninstaller"
+
+# allow newer compilers to work
+sed "/.*unsupported GNU version.*/d" "$1$prefix/cuda/include/crt/host_config.h" > _
+mv _ "$1$prefix/cuda/include/crt/host_config.h"
+sed "/.*unsupported clang version.*/d" "$1$prefix/cuda/include/crt/host_config.h" > _
+mv _ "$1$prefix/cuda/include/crt/host_config.h"
+
+# for f in $(find "$1/usr" -name Makefile)
+# do
+# 	sed "s|/usr/local/cuda|/usr/local/cuda|g" "$f" > _
+# 	mv _ "$f"
+# done
+
+# mkdir -p "$1/etc/profile.d"
+# cp cuda_path.sh "$1/etc/profile.d/"
+
+# mkdir -p "$1/usr/lib/pkgconfig"
+# cp ../*.pc "$1/usr/lib/pkgconfig/"
+
+mkdir -p "$1/etc/profile.d"
+cp ../cuda_path.sh "$1/etc/profile.d/"
+
+mkdir -p "$1/usr/include" "$1/usr/lib"
+cd "$1/usr/local/cuda/include"
+for file in *
+do
+	ln -s "/usr/local/cuda/include/$file" "$1/usr/include"
+done
+cd "$1/usr/local/cuda/lib64"
+for file in *
+do
+	ln -s "/usr/local/cuda/lib64/$file" "$1/usr/lib/"
+done

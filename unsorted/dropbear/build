@@ -1,0 +1,23 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr
+
+make
+make install
+
+# migrate the binary out of sbin
+mv "$1/usr/sbin/"* "$1/usr/bin/"
+rmdir "$1/usr/sbin"
+
+# generate keys if the host doesn't have them, a hack
+mkdir -p "$1/etc/dropbear"
+for type in rsa dss ecdsa ed25519
+do
+	[ -f "/etc/dropbear/dropbear_${type}_host_key" ] ||
+	{
+		"$1/usr/bin/dropbearkey" -t "$type" -f "$1/etc/dropbear/dropbear_${type}_host_key"
+	}
+done
+
+install -D run "$1/etc/sv/dropbear/run"

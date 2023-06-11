@@ -1,0 +1,56 @@
+--- soundpipe.orig/Makefile
++++ soundpipe/Makefile
+@@ -4,7 +4,7 @@
+ 
+ VERSION = 2.0.0
+ 
+-PREFIX ?= /usr/local
++PREFIX ?= /usr
+ 
+ LIBSOUNDPIPE = libsoundpipe.a
+ 
+@@ -25,7 +25,7 @@
+ endif
+ 
+ CFLAGS += -DSP_VERSION=$(VERSION) -O3 -DSPFLOAT=${SPFLOAT}
+-CFLAGS += -Ih -I/usr/local/include -fPIC
++CFLAGS += -Ih -I/usr/include -fPIC
+ CFLAGS += -I.
+ CFLAGS += -Wall -pedantic
+ UTIL += util/wav2smp
+@@ -77,9 +77,10 @@
+ 	h/soundpipe.h \
+ 	h/sp_base.h \
+ 	libsoundpipe.a
+-	install h/soundpipe.h /usr/local/include/
+-	install h/sp_base.h /usr/local/include/
+-	install libsoundpipe.a /usr/local/lib/
++	mkdir -p "$(DESTDIR)/usr/include" "$(DESTDIR)/usr/lib"
++	install h/soundpipe.h "$(DESTDIR)/usr/include/"
++	install h/sp_base.h "$(DESTDIR)/usr/include/"
++	install libsoundpipe.a "$(DESTDIR)/usr/lib/"
+ 
+ clean:
+ 	$(RM) h/soundpipe.h
+--- soundpipe.orig/test/Makefile
++++ soundpipe/test/Makefile
+@@ -10,8 +10,8 @@
+ OBJ = $(addprefix t/, $(addsuffix .o, $(TESTS)))
+ PERF_OBJ = $(addprefix p/, $(PERF))
+ 
+-LDFLAGS += -L/usr/local/lib -lsndfile -lm
+-CFLAGS += -g -I../h -I /usr/local/include -I. -O3 -Wall -pedantic
++LDFLAGS += -L/usr/lib -lsndfile -lm
++CFLAGS += -g -I../h -I /usr/include -I. -O3 -Wall -pedantic
+ CFLAGS += -DSAMPDIR="\"../examples/\""
+ 
+ ifdef WRITE_RAW
+@@ -37,7 +37,7 @@
+ 	rm demo.png
+ 
+ test.o: test.c
+-	$(CC) -g -I../h -I /usr/local/include -c -o $@ $<
++	$(CC) -g -I../h -I /usr/include -c -o $@ $<
+ 
+ run.bin: run.c test.c md5.c libsptest.a $(OBJ) all_tests.h
+ 	$(CC) run.c -Wall $(CFLAGS) $(LDFLAGS) -o$@ $(OBJ) ../libsoundpipe.a libsptest.a -lm -lsndfile

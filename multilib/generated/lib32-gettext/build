@@ -1,0 +1,47 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+./configure \
+	--prefix=/usr \
+	--disable-java \
+	--disable-native-java \
+	--disable-csharp \
+	--disable-libasprintf \
+	--enable-threads=posix \
+	--disable-rpath \
+	--without-emacs \
+	--disable-acl \
+	--with-included-glib \
+	--with-included-libcroco \
+	--without-git \
+	--with-included-libxml \
+	--with-included-libunistring \
+	--disable-openmp \
+	--disable-curses \
+	--without-examples \
+	--enable-nls
+
+make
+make install
+
+# strip out libtextstyle cos libtextstyle is in a different package
+# (gettext won't build unless libtextstyle is already installed \
+#  and libtextstyle gets installed into destdir where gettext can't \
+#  find it)
+rm "$1"/usr/share/info/libtextstyle.info
+rm -r "$1"/usr/share/doc/libtextstyle
+rm "$1"/usr/lib/libtextstyle.*
+rm -r "$1"/usr/include/textstyle*
+mkdir -p "$1/usr/lib32"
+mv "$1/usr/lib/"* "$1/usr/lib32/"
+rmdir "$1/usr/lib"
+[ -d "$1/usr/lib32/pkgconfig" ] && for i in "$1/usr/lib32/pkgconfig/"*
+do
+	sed 's_/lib_/lib32_g' $i > _
+	mv _ $i
+done
+rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"
+find "$1/usr/include/" -iname "*.h" -not -name "*x86*" -exec rm -f {} \;

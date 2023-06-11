@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+meson setup . build \
+	--prefix=/usr
+
+meson compile -Cbuild
+meson install -Cbuild

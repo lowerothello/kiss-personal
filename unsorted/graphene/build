@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+git submodule init
+git submodule update
+
+meson build \
+	-Dprefix=/usr
+meson compile -Cbuild
+meson install -Cbuild

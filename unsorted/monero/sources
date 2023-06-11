@@ -1,0 +1,7 @@
+files/run files
+git+https://github.com/monero-project/monero
+git+https://github.com/miniupnp/miniupnp external/miniupnp
+git+https://github.com/Tencent/rapidjson external/rapidjson
+git+https://github.com/trezor/trezor-common.git external/trezor-common
+git+https://github.com/tevador/RandomX external/randomx
+git+https://github.com/monero-project/supercop@monero external/supercop

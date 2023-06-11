@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+./configure \
+    --prefix=/usr \
+    --enable-shared
+
+make
+make DESTDIR="$DESTDIR" install
+
+cd doc
+make DESTDIR="$DESTDIR" install

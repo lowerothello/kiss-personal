@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+CC="$CC -m32"
+CXX="$CXX -m32"
+
+./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib32 \
+	--without-python
+
+make
+make install
+
+# Remove duplicates
+rm -rf "$1/usr/bin" "$1/usr/include" "$1/usr/share"

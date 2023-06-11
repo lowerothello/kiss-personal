@@ -1,0 +1,52 @@
+#!/bin/sh -e
+
+mv fat1.lv2/img/x42_fat1.png fat1.lv2/img/x42-fat1.png
+mv fil4.lv2/img/x42_fil4.png fil4.lv2/img/x42-fil4.png
+mv mixtri.lv2/img/x42_mixtri.png mixtri.lv2/img/x42-mixtri.png
+mv meters.lv2/img/x42-meters.png meters.lv2/img/x42-meter.png
+mv matrixmixer.lv2/img/x42-matrixmixer.png matrixmixer.lv2/img/x42-matrixmixer8x8.png
+
+# install -T is a gnuism
+sed 's#\tinstall -T -m755 $(APPBLD)x42-meter-collection$(EXE_EXT) $(DESTDIR)$(BINDIR)/x42-meter$(EXE_EXT)#\tmv $(APPBLD)x42-meter-collection$(EXE_EXT) $(APPBLD)x42-meter$(EXE_EXT)\n\tinstall -m755 $(APPBLD)x42-meter$(EXE_EXT) $(DESTDIR)$(BINDIR)#' \
+	meters.lv2/Makefile > _
+mv _ meters.lv2/Makefile
+sed 's#\tinstall -T -m755 $(APPBLD)x42-tuna-collection$(EXE_EXT) $(DESTDIR)$(BINDIR)/x42-tuna$(EXE_EXT)#\tmv $(APPBLD)x42-tuna-collection$(EXE_EXT) $(APPBLD)x42-tuna$(EXE_EXT)\n\tinstall -m755 $(APPBLD)x42-tuna$(EXE_EXT) $(DESTDIR)$(BINDIR)#' \
+	tuna.lv2/Makefile > _
+mv _ tuna.lv2/Makefile
+
+# remove bash dependancy
+for patch in *.patch
+do
+	patch -p1 < "$patch"
+done
+sed \
+	-e 's|/usr/bin/env bash|/bin/sh -e|' \
+	-e 's/\$\[\$i + 1\]/\$((i+1))/g' \
+	-e 's/\$\[\$j + 1\]/\$((j+1))/g' \
+	matrixmixer.lv2/genhead.sh > _
+mv _ matrixmixer.lv2/genhead.sh
+chmod +x matrixmixer.lv2/genhead.sh
+sed \
+	-e 's|/usr/bin/env bash|/bin/sh -e|' \
+	-e 's/\$\[\$i + 1\]/\$((i+1))/g' \
+	-e 's/\$\[\$j + 1\]/\$((j+1))/g' \
+	-e 's/\$\[\$IDX + 1\]/\$((IDX+1))/g' \
+	matrixmixer.lv2/genttl.sh > _
+mv _ matrixmixer.lv2/genttl.sh
+chmod +x matrixmixer.lv2/genttl.sh
+sed \
+	-e 's|/usr/bin/env bash|/bin/sh -e|' \
+	-e 's/\$\[\$i + 1\]/\$((i+1))/g' \
+	-e 's/\$\[\$j + 1\]/\$((j+1))/g' \
+	-e 's/\$\[\$IDX + 1\]/\$((IDX+1))/g' \
+	stepseq.lv2/gridgen.sh > _
+mv _ stepseq.lv2/gridgen.sh
+chmod +x stepseq.lv2/gridgen.sh
+
+export FONTFILE=/usr/share/fonts/TTF/DejaVuSans-Bold.ttf
+
+make
+make -C phaserotate.lv2/cli
+
+make install PREFIX=/usr
+make -C phaserotate.lv2/cli install PREFIX=/usr

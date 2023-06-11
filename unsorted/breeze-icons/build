@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+cmake -Bbuild \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DBUILD_TESTING=OFF
+
+cmake --build build
+cmake --install build

@@ -1,0 +1,11 @@
+fontconfig
+freetype-harfbuzz
+glib
+libXext
+libXrender
+libpng
+mesa
+pixman
+pkgconf make
+zlib
+cairo

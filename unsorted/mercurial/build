@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+make build
+make PREFIX=/usr install-bin

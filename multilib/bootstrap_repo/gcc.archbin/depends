@@ -1,0 +1,5 @@
+isl
+libmpc
+zstd make
+binutils
+lib32-glibc.archbin

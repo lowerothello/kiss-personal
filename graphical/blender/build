@@ -1,0 +1,29 @@
+#!/bin/sh -e
+
+# for i in *.patch
+# do
+# 	patch -p1 < "$i"
+# done
+
+pythonver="$(python3 -c 'import sys; print("%i.%i" % (sys.version_info.major, sys.version_info.minor))')"
+cmake -B build \
+	-GNinja \
+	-Cbuild_files/cmake/config/blender_release.cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DWITH_INSTALL_PORTABLE=OFF \
+	-DWITH_CYCLES=OFF \
+	-DWITH_CYCLES_EMBREE=OFF \
+	-DWITH_PYTHON_INSTALL=OFF \
+	-DPYTHON_VERSION="$pythonver" \
+	-DPYTHON_LIBPATH=/usr/lib \
+	-DPYTHON_LIBRARY="python$pythonver" \
+	-DPYTHON_INCLUDE_DIRS="/usr/include/python$pythonver" \
+	-DCMAKE_CXX_FLAGS="-I/usr/include/python$pythonver" \
+	-DWITH_SYSTEM_LZO=ON
+
+	# -DCMAKE_C_FLAGS="-I/usr/include/ffmpeg4.4" \
+	# -DCMAKE_CXX_FLAGS="-I/usr/include/python$pythonver -I/usr/include/ffmpeg4.4 -L/usr/lib/ffmpeg4.4" \
+
+ninja -C build
+ninja -C build install

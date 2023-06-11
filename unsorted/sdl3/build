@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+:>nostrip # i'm developing with sdl so need debug symbols
+
+cmake -S . -B build \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Debug
+
+cmake --build build
+cmake --install build

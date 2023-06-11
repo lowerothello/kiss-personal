@@ -1,0 +1,67 @@
+#!/bin/sh -e
+# TODO: get rid of the rest of the hardcoded colors and color mixes
+
+[ "$USER" == "root" ] && {
+	echo "Build this package as your regular user!"
+	echo "Falling back to installing templates to the system directory"
+	echo "(wal won't pick them up, they will need to be linked or smth)"
+	templatedir="/etc/wal/templates"
+	cachedir="/tmp/wal"
+	themedir="/usr/share/pywal/themes"
+} || {
+	templatedir="${XDG_CONFIG_HOME:-$HOME/.config}/wal/templates"
+	cachedir="${XDG_CACHE_HOME:-$HOME/.cache}/wal"
+	themedir="${XDG_DATA_HOME:-$HOME/.local/share}/themes"
+}
+
+
+mkdir -p "$DESTDIR/$templatedir" "$DESTDIR/$themedir" "$DESTDIR/$cachedir"
+
+cp files/colors.* "$DESTDIR/$templatedir/"
+cp -r FlatColor "$DESTDIR/$themedir/FlatColor"
+rm "$DESTDIR/$themedir/FlatColor/gtk-2.0/gtkrc.base"
+rm "$DESTDIR/$themedir/FlatColor/gtk-3.0/gtk.css.base"
+rm "$DESTDIR/$themedir/FlatColor/gtk-3.20/gtk.css.base"
+rm "$DESTDIR/$themedir/FlatColor/gtk-2.0/gtkrc"
+rm "$DESTDIR/$themedir/FlatColor/gtk-3.0/gtk.css"
+rm "$DESTDIR/$themedir/FlatColor/gtk-3.20/gtk.css"
+
+cp FlatColor/gtk-2.0/gtkrc.base "$DESTDIR/$templatedir/gtkrc.gtk-2.0"
+sed \
+	-e 's/text_color:{color15}/text_color:{color7}/' \
+	-e 's/selected_bg_color:{active}/selected_bg_color:{color1}/' \
+	-e 's/selected_fg_color:{color15}/selected_fg_color:{color7}/' \
+	-e 's/tooltip_fg_color:{color15}/tooltip_fg_color:{color7}/' \
+	-e 's/titlebar_fg_color:{color15}/titlebar_fg_color:{color7}/' \
+	-e 's/menu_fg_color:{color15}/menu_fg_color:{color7}/' \
+	-e 's/link_color:{active}/link_color:{color3}/' \
+	"$DESTDIR/$templatedir/gtkrc.gtk-2.0" > _
+mv _ "$DESTDIR/$templatedir/gtkrc.gtk-2.0"
+ln -s "$cachedir/gtkrc.gtk-2.0" "$DESTDIR/$themedir/FlatColor/gtk-2.0/gtkrc"
+
+cp FlatColor/gtk-3.0/gtk.css.base "$DESTDIR/$templatedir/gtk.css.gtk-3.0"
+sed \
+	-e 's/@define-color fg_color {color15};/@define-color fg_color {color7};/' \
+	-e 's/@define-color text_color {color15};/@define-color text_color {color7};/' \
+	-e 's/@define-color selected_bg_color {active};/@define-color selected_bg_color {color1};/' \
+	-e 's/@define-color selected_fg_color {color15};/@define-color selected_fg_color {color7};/' \
+	-e 's/@define-color tooltip_fg_color {color15};/@define-color tooltip_fg_color {color7};/' \
+	-e 's/@define-color link_color mix (@theme_selected_bg_color, black, 0.15);/@define-color link_color {color3};/' \
+	"$DESTDIR/$templatedir/gtk.css.gtk-3.0" > _
+mv _ "$DESTDIR/$templatedir/gtk.css.gtk-3.0"
+ln -s "$cachedir/gtk.css.gtk-3.0" "$DESTDIR/$themedir/FlatColor/gtk-3.0/gtk.css"
+
+cp FlatColor/gtk-3.20/gtk.css.base "$DESTDIR/$templatedir/gtk.css.gtk-3.20"
+sed \
+	-e 's/@define-color selected_bg_color {active};/@define-color selected_bg_color {color1};/' \
+	-e 's/@define-color bg_color mix(@color0, @color15, 0.12);/@define-color bg_color {color0};/' \
+	-e 's/@define-color tooltip_bg_color mix(@color0, @color15, 0.04);/@define-color tooltip_bg_color {color0};/' \
+	-e 's/@define-color base_color mix(@color0, @color15, 0.12);/@define-color base_color {color0};/' \
+	-e 's/@define-color fg_color @color15;/@define-color fg_color @color7;/' \
+	-e 's/@define-color text_color @color15;/@define-color text_color @color7;/' \
+	-e 's/@define-color selected_fg_color @color15;/@define-color selected_fg_color @color7;/' \
+	-e 's/@define-color tooltip_fg_color @color15;/@define-color tooltip_fg_color @color7;/' \
+	-e 's/@define-color link_color mix (@theme_selected_bg_color, black, 0.15);/@define-color link_color @color3;/' \
+	"$DESTDIR/$templatedir/gtk.css.gtk-3.20" > _
+mv _ "$DESTDIR/$templatedir/gtk.css.gtk-3.20"
+ln -s "$cachedir/gtk.css.gtk-3.20" "$DESTDIR/$themedir/FlatColor/gtk-3.20/gtk.css"

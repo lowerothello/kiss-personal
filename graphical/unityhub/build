@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+ar x *.deb
+
+tar xjf data.tar.bz2 -C "$1/"
+
+mkdir -p "$1/usr/bin"
+ln -s /opt/unityhub/unityhub "$1/usr/bin/unityhub"

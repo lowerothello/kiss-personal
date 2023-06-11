@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec monerod --config-file /etc/monerod.conf --non-interactive

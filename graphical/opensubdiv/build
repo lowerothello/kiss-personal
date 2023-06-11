@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+for i in *.patch
+do
+	patch -p1 < "$i"
+done
+
+sed 's/list(GET VERSION 0 MAJOR)//;s/list(GET VERSION 1 MINOR)//;s/set(VERSION ${MAJOR}.${MINOR})/set(VERSION 1.0)/' cmake/FindOpenCL.cmake > _
+mv _ cmake/FindOpenCL.cmake
+
+cmake -B build \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release
+
+cmake --build build
+cmake --install build

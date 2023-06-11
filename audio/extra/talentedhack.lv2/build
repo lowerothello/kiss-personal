@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+make
+
+mkdir -p "$1/usr/lib/lv2/talentedhack.lv2"
+cp *.so *.ttl "$1/usr/lib/lv2/talentedhack.lv2/"

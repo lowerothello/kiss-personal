@@ -1,0 +1,4 @@
+Requires my fork of boost, will fail the final link
+with the boost package in community.
+
+Uses ffmpeg4.4 cos upstream doesn't support 5.0 yet.

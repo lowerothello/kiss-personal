@@ -1,0 +1,48 @@
+--- picofeed.orig/main.go
++++ picofeed/main.go
+@@ -96,16 +96,11 @@
+ 	grouped := groupByDate(posts, dateFormat)
+ 
+ 	for _, group := range grouped {
+-		for i, p := range group {
+-			if i == 0 {
++		for _, p := range group {
++			/* if i == 0 {
+ 				fmt.Printf("%s\n", p.Timestamp.Format(dateFormat))
+-			}
+-			if len(p.Title) > 70 {
+-				fmt.Printf("    %v\n", p.Title)
+-				fmt.Printf("    %70v %s\n", "", p.Link)
+-			} else {
+-				fmt.Printf("    %-70v %s\n", p.Title, p.Link)
+-			}
++			} */
++			fmt.Printf("%s\t%s\t%s\n", p.Title, p.Author, p.Link)
+ 		}
+ 	}
+ }
+@@ -140,7 +135,7 @@
+ 			if i == 0 {
+ 				fmt.Fprintf(f, "<h4>%s</h4>\n", p.Timestamp.Format(dateFormat))
+ 			}
+-			fmt.Fprintf(f, "<div><a href=\"%s\">%s</a> (%s)</div>\n", p.Link, p.Title, p.shortFeedLink())
++			fmt.Fprintf(f, "<div><a href=\"%s\">%s - %s</a> (%s)</div>\n", p.Link, p.Title, p.Author, p.shortFeedLink())
+ 		}
+ 	}
+ 
+@@ -151,6 +146,7 @@
+ 
+ type Post struct {
+ 	Title     string
++	Author    string
+ 	Link      string
+ 	Timestamp *time.Time
+ 	FeedLink  string
+@@ -321,6 +317,7 @@
+ 
+ 		posts = append(posts, &Post{
+ 			Title:     i.Title,
++			Author:    i.Author.Name,
+ 			Link:      i.Link,
+ 			Timestamp: t,
+ 			FeedTitle: feed.Title,

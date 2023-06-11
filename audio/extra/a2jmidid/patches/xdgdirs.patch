@@ -1,0 +1,99 @@
+--- a2jmidid-9.orig/paths.c
++++ a2jmidid-9/paths.c
+@@ -27,8 +27,8 @@
+ #include "paths.h"
+ #include "log.h"
+ 
+-#define DEFAULT_XDG_LOG "/.log"
+-#define DEFAULT_XDG_CONF "/.config"
++// #define DEFAULT_XDG_LOG "/.log"
++// #define DEFAULT_XDG_CONF "/.config"
+ #define A2J_XDG_SUBDIR "/a2j"
+ #define A2J_XDG_LOG "/a2j.log"
+ #define A2J_XDG_CONF "/a2j.conf"
+@@ -98,35 +98,26 @@
+ 
+ char *
+ a2j_path_init(
+-  const char * home_dir,
+   const char * purpose_subdir,
+   const char * file)
+ {
+-  char * dir1;
+   char * dir2;
+   char * filepath;
+ 
+   filepath = NULL;
+ 
+-	dir1 = catdup(home_dir, purpose_subdir);
+-	if (dir1 == NULL)
++	dir2 = catdup(purpose_subdir, A2J_XDG_SUBDIR);
++	if (dir2 == NULL)
+ 	{
+ 		a2j_error("Out of memory");
+ 		goto exit;
+ 	}
+ 
+-	dir2 = catdup(dir1, A2J_XDG_SUBDIR);
+-	if (dir2 == NULL)
++	if (!ensure_dir_exist(purpose_subdir, 0700))
+ 	{
+-		a2j_error("Out of memory");
+-		goto free_dir1;
++		goto exit;
+ 	}
+ 
+-	if (!ensure_dir_exist(dir1, 0700))
+-	{
+-		goto free_dir1;
+-	}
+-
+ 	if (!ensure_dir_exist(dir2, 0700))
+ 	{
+ 		goto free_dir2;
+@@ -141,9 +132,6 @@
+ free_dir2:
+   free(dir2);
+ 
+-free_dir1:
+-  free(dir1);
+-
+ exit:
+   return filepath;
+ }
+@@ -151,6 +139,8 @@
+ bool
+ a2j_paths_init()
+ {
++	const char * log_dir;
++	const char * conf_dir;
+ 	const char * home_dir;
+ 
+ 	home_dir = getenv("HOME");
+@@ -160,13 +150,24 @@
+ 		goto exit;
+ 	}
+ 
+-  g_a2j_log_path = a2j_path_init(home_dir, DEFAULT_XDG_LOG, A2J_XDG_LOG);
++	log_dir = getenv("XDG_CACHE_HOME");
++	if (log_dir == NULL)
++	{
++		log_dir = catdup(home_dir, "/.cache");
++	}
++	conf_dir = getenv("XDG_CONFIG_HOME");
++	if (conf_dir == NULL)
++	{
++		conf_dir = catdup(home_dir, "/.config");
++	}
++
++  g_a2j_log_path = a2j_path_init(log_dir, A2J_XDG_LOG);
+ 	if (g_a2j_log_path == NULL)
+ 	{
+ 		goto exit;
+ 	}
+ 
+-  g_a2j_conf_path = a2j_path_init(home_dir, DEFAULT_XDG_CONF, A2J_XDG_CONF);
++  g_a2j_conf_path = a2j_path_init(conf_dir, A2J_XDG_CONF);
+ 	if (g_a2j_conf_path == NULL)
+ 	{
+ 		goto free_log_path;

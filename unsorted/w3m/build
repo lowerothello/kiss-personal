@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+#export CFLAGS="$CFLAGS \
+#    -I/usr/include/glib-2.0/ \
+#    -I/usr/lib/glib-2.0/include \
+#    -I/usr/include/gdk-pixbuf-2.0"
+
+./configure \
+    --prefix=/usr \
+    --disable-ipv6 \
+    --disable-w3mmailer \
+    --disable-image
+
+sed 's/awk/gawk/' libwc/Makefile > _
+mv _ libwc/Makefile
+
+make
+make install

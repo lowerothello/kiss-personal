@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+# patch out hardcoded /usr/local prefix
+sed 's_/usr/local_/usr_g' Makefile > _
+mv _ Makefile
+
+make
+install -Dm755 irunt "$1/usr/bin/irunt"
+install -Dm644 librunt.a "$1/usr/lib/librunt.a"
+install -Dm755 runt.h "$1/usr/include/runt.h"

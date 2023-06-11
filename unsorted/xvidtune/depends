@@ -1,0 +1,6 @@
+automake make
+libX11
+libXaw
+libXmu
+libXt
+libXxf86vm

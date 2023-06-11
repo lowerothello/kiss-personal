@@ -1,0 +1,7 @@
+meson make
+samurai make
+curl
+gtkmm3
+libsigc++
+libconfig
+libxml2

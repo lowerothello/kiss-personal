@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+mkdir -p "$DESTDIR/opt"
+mkdir -p "$DESTDIR/usr/bin"
+
+chmod +x ./osu.AppImage
+./osu.AppImage --appimage-extract
+
+cp -r squashfs-root/usr/bin "$DESTDIR/opt/osu"
+
+ln -s "/opt/osu/osu!" "$DESTDIR/usr/bin/osu!"

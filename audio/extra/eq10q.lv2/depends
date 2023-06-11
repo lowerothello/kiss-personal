@@ -1,0 +1,18 @@
+atk
+atkmm
+cairo
+cairomm
+cmake make
+fftw
+fontconfig
+freetype-harfbuzz
+gdk-pixbuf
+glib
+glibmm
+gtk+2
+gtkmm2
+libsigc++
+lv2
+pango
+pangomm
+

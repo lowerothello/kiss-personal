@@ -1,0 +1,6 @@
+cmake make
+swig
+qt5
+ffmpeg
+mbedtls
+v4l2-utils

@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr \
+	--purple=1
+
+make
+make DESTDIR="$1" install
+make DESTDIR="$1" install-etc
+make DESTDIR="$1" install-dev
+
+mkdir -p "$1/etc/sv/bitlbee"
+cp run "$1/etc/sv/bitlbee/run"

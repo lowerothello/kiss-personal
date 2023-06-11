@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+user="$(cat /etc/jackuser)"
+
+exec su "${user:-"nobody"}" -c pulseaudio

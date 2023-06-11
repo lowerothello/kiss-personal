@@ -1,0 +1,6 @@
+meson build
+samurai build
+gobject-introspection
+pango
+pcre2
+bash make

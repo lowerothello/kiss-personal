@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+sed 's/RELEASE_CFLAGS   := -Wall -Wno-unknown-pragmas -Wno-format -O3/RELEASE_CFLAGS   := ${CXXFLAGS} -fPIC/' \
+	Makefile > _
+mv _ Makefile
+make
+g++ -fPIC $CXXFLAGS $LDFLAGS -shared -o "libtinyxml.so.0.2.6.2" \
+	-Wl,-soname,"libtinyxml.so.0" $(ls *.o | grep -v xmltest)
+
+install -dm755 "$1/usr/lib"
+install -dm755 "$1/usr/include"
+install -Dm755 "libtinyxml.so.0.2.6.2" "$1/usr/lib/"
+install -Dm644 "tinyxml.h" "tinystr.h" "$1/usr/include/"
+ln -s "libtinyxml.so.0.2.6.2" "$1/usr/lib/libtinyxml.so.0"
+ln -s "libtinyxml.so.0.2.6.2" "$1/usr/lib/libtinyxml.so"

@@ -1,0 +1,146 @@
+--- sporth.orig/Makefile
++++ sporth/Makefile
+@@ -2,7 +2,7 @@
+ 
+ MASTER_MAKEFILE=1
+ 
+-CFLAGS += -O3 -fPIC -I/usr/local/include -Wall -ansi
++CFLAGS += -O3 -fPIC -I/usr/include -Wall -ansi
+ 
+ include config.mk
+ ifdef DEBUG_MODE
+@@ -94,7 +94,7 @@
+ 	$(CC) -Ih $(CFLAGS) $< -o $@ libsporth.a $(LIBS)
+ 
+ sporth: sporth.c $(OBJ) h/ugens.h
+-	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
++	$(CC) sporth.c -L/usr/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
+ 
+ libsporth.a: $(OBJ) sporth.h
+ 	$(AR) rcs libsporth.a $(KOBJ) $(OBJ) 
+@@ -103,21 +103,21 @@
+ 	sh util/header_gen.sh
+ 
+ analyze:
+-	$(CC) -Ih -I. -I/usr/local/include -Wall -ansi --analyze *.c $(UGENS_C) 
++	$(CC) -Ih -I. -I/usr/include -Wall -ansi --analyze *.c $(UGENS_C) 
+ 
+ test: sporth
+ 	/bin/bash test.sh
+ 
+ install: $(SPORTHLIBS) sporth sporth.h
+-	install sporth /usr/local/bin
+-	install sporth.h /usr/local/include/sporth.h
+-	install ugens/cdb/cdb.h /usr/local/include/cdb.h
+-	install $(SPORTHLIBS) /usr/local/lib
+-	mkdir -p /usr/local/share/sporth
+-	install ugen_reference.txt /usr/local/share/sporth
+-	install util/ugen_lookup /usr/local/bin
+-	install util/spparse /usr/local/bin
+-	install util/sp_eval_file /usr/local/bin
++	mkdir -p "$(DESTDIR)/usr/bin" "$(DESTDIR)/usr/share/sporth"  "$(DESTDIR)/usr/lib" "$(DESTDIR)/usr/include"
++	install sporth "$(DESTDIR)/usr/bin"
++	install sporth.h "$(DESTDIR)/usr/include/sporth.h"
++	install ugens/cdb/cdb.h "$(DESTDIR)/usr/include/cdb.h"
++	install $(SPORTHLIBS) "$(DESTDIR)/usr/lib"
++	install ugen_reference.txt "$(DESTDIR)/usr/share/sporth"
++	install util/ugen_lookup "$(DESTDIR)/usr/bin"
++	install util/spparse "$(DESTDIR)/usr/bin"
++	install util/sp_eval_file "$(DESTDIR)/usr/bin"
+ 	./util/installer.sh $(BIN)
+ 	./ugens/polysporth/install.sh
+ 
+--- sporth.orig/examples/api/just_sporth.c
++++ sporth/examples/api/just_sporth.c
+@@ -32,7 +32,7 @@
+ #include <stdint.h>
+ #include <string.h>
+ 
+-/* If you are using /usr/local/include/sporth.h, you will need to include the
++/* If you are using /usr/include/sporth.h, you will need to include the
+  * soundpipe header files for plumber.
+  *
+  * If you have created a minimal working version of sporth, you will not
+--- sporth.orig/ugens/polysporth/f.c
++++ sporth/ugens/polysporth/f.c
+@@ -112,7 +112,7 @@
+ 
+     /*
+     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
+-            mk_string(sc, "/usr/local/share/sporth/polysporth/"));
++            mk_string(sc, "/usr/share/sporth/polysporth/"));
+     */
+     sc->ext_data = (void *)ps;
+ 
+@@ -529,7 +529,7 @@
+     if(path != NULL)
+         return mk_string(sc, path);
+     else
+-        return mk_string(sc, "/usr/local/share/sporth/polysporth");
++        return mk_string(sc, "/usr/share/sporth/polysporth");
+ }
+ 
+ static pointer scm_push_string(scheme *sc, pointer args)
+--- sporth.orig/ugens/polysporth/install.sh
++++ sporth/ugens/polysporth/install.sh
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+-PS_PATH=/usr/local/share/sporth/polysporth
+-mkdir -p $PS_PATH
+-install ugens/polysporth/scm/init.scm $PS_PATH
+-install ugens/polysporth/scm/ps.scm $PS_PATH
++PS_PATH="$DESTDIR/usr/share/sporth/polysporth"
++mkdir -p "$PS_PATH"
++install ugens/polysporth/scm/init.scm "$PS_PATH"
++install ugens/polysporth/scm/ps.scm "$PS_PATH"
+--- sporth.orig/util/chorth/makefile
++++ sporth/util/chorth/makefile
+@@ -37,7 +37,7 @@
+ CXX=gcc
+ LD=g++
+ 
+-CHUGIN_PATH=/usr/local/lib/chuck
++CHUGIN_PATH=/usr/lib/chuck
+ 
+ ifneq (,$(strip $(filter osx bin-dist-osx,$(MAKECMDGOALS))))
+ include makefile.osx
+--- sporth.orig/util/chorth/makefile.linux
++++ sporth/util/chorth/makefile.linux
+@@ -1,4 +1,4 @@
+-CHUGIN_PATH=/usr/local/lib/chuck
++CHUGIN_PATH=/usr/lib/chuck
+ 
+ FLAGS=-D__LINUX_ALSA__ -D__PLATFORM_LINUX__ -I$(CK_SRC_PATH) -fPIC 
+ LDFLAGS += -lsporth -lsoundpipe -lstdc++ -fPIC -lsndfile -lm -shared
+--- sporth.orig/util/faust2sporth/faust2sporth
++++ sporth/util/faust2sporth/faust2sporth
+@@ -12,5 +12,5 @@
+ SO_FILE=$NAME.so
+ 
+ faust -cn $NAME -uim -o $CPP_FILE -a sporth.cpp $DSP_FILE
+-g++ -g -fPIC -I/usr/local/include -shared $CPP_FILE -o $SO_FILE -lsporth
++g++ -g -fPIC -I/usr/include -shared $CPP_FILE -o $SO_FILE -lsporth
+ rm $CPP_FILE
+--- sporth.orig/util/installer.sh
++++ sporth/util/installer.sh
+@@ -2,7 +2,7 @@
+ do
+     if [ -e $util ] 
+     then
+-        echo install $util /usr/local/bin
+-        install $util /usr/local/bin
++        echo install $util /usr/bin
++        install $util "$DESTDIR/usr/bin"
+     fi
+ done
+--- sporth.orig/util/ugen_lookup
++++ sporth/util/ugen_lookup
+@@ -8,7 +8,7 @@
+ NAME=$1
+ OS="$(uname)"
+ 
+-REF=/usr/local/share/sporth/ugen_reference.txt
++REF=/usr/share/sporth/ugen_reference.txt
+ 
+ if [ ! -f ]
+ then

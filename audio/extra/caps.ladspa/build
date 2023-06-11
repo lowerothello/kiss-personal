@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+./configure.py --prefix=/usr
+
+make
+make install DESTDIR="$1"

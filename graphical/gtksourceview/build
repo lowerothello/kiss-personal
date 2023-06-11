@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+meson build \
+	--prefix=/usr \
+	-Dvapi=false
+
+ninja -Cbuild install

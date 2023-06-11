@@ -1,0 +1,7 @@
+meson build
+alsa-lib
+eudev
+glib
+libsndfile
+libtool
+pulseaudio

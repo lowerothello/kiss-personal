@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+cmake \
+	-Bbuild-x64 \
+	-H. \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib
+
+cd build-x64
+make
+make install

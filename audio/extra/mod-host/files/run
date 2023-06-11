@@ -1,0 +1,5 @@
+#!/bin/sh
+
+user="$(cat /etc/jackuser)"
+prlimit --rtprio=95 --memlock=unlimited -p $$
+exec su "${user:-"nobody"}" -c "mod-host -np5555"

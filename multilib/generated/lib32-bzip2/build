@@ -1,0 +1,45 @@
+#!/bin/sh -e
+CC="$CC -m32"
+CXX="$CXX -m32"
+export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+export LD_LIBRARY_PATH=/usr/lib32
+
+make CC="$CC $CFLAGS -fPIC $LDFLAGS" -f Makefile-libbz2_so
+make CC="$CC $CFLAGS -static -fPIC $LDFLAGS" bzip2
+
+mkdir -p \
+    "$1/usr/bin" \
+    "$1/usr/lib" \
+    "$1/usr/share/man/man1" \
+    "$1/usr/include"
+
+cp -f \
+    bzip2 \
+    bzdiff \
+    bzgrep \
+    bzmore \
+    "$1/usr/bin"
+
+cp -f \
+    libbz2.so.1.0.8 \
+    libbz2.a \
+    "$1/usr/lib"
+
+cp -f bzip2.1 "$1/usr/share/man/man1"
+cp -f bzlib.h "$1/usr/include"
+
+ln -sf libbz2.so.1.0.8 "$1/usr/lib/libbz2.so"
+ln -sf libbz2.so.1.0.8 "$1/usr/lib/libbz2.so.1"
+ln -sf libbz2.so.1.0.8 "$1/usr/lib/libbz2.so.1.0"
+ln -sf bzip2 "$1/usr/bin/bunzip2"
+ln -sf bzip2 "$1/usr/bin/bzcat"
+mkdir -p "$1/usr/lib32"
+mv "$1/usr/lib/"* "$1/usr/lib32/"
+rmdir "$1/usr/lib"
+[ -d "$1/usr/lib32/pkgconfig" ] && for i in "$1/usr/lib32/pkgconfig/"*
+do
+	sed 's_/lib_/lib32_g' $i > _
+	mv _ $i
+done
+rm -rf "$1/usr/share" "$1/etc" "$1/usr/bin" "$1/${XDG_DATA_HOME:-"$HOME/.local/share"}"
+find "$1/usr/include/" -iname "*.h" -not -name "*x86*" -exec rm -f {} \;

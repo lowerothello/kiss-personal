@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+./fuckpragmaonce.sh $(find include/clap -type f)
+
+mkdir -p "$1/usr/include"
+
+cp -r "include/clap" "$1/usr/include"

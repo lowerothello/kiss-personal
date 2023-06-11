@@ -1,0 +1,3 @@
+git+https://github.com/qt/qtstyleplugins
+https://aur.archlinux.org/cgit/aur.git/plain/0001-fix-build-against-Qt-5.15.patch?h=qt5-styleplugins patches
+https://aur.archlinux.org/cgit/aur.git/plain/0002-fix-gtk2-background.patch?h=qt5-styleplugins patches

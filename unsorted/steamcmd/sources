@@ -1,0 +1,6 @@
+files/linux32/crashhandler.so linux32
+files/linux32/libstdc++.so.6 linux32
+files/linux32/steamcmd linux32
+files/linux32/steamerrorreporter linux32
+files/steamcmd.sh
+files/steamcmd

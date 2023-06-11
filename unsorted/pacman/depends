@@ -1,0 +1,5 @@
+meson make
+samurai make
+curl
+libarchive
+openssl

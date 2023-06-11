@@ -1,0 +1,4 @@
+#!/bin/sh
+
+user="$(cat /etc/jackuser)"
+exec su "${user:-"nobody"}" -c "rju-plumbing"

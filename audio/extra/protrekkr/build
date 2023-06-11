@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+sed 's_/usr/local_/usr_g' src/ui/xml.cpp > _
+mv _ src/ui/xml.cpp
+sed 's_/usr/local_/usr_g' src/ptk.cpp > _
+mv _ src/ptk.cpp
+sed 's_/usr/local_/usr_g' src/support/main.cpp > _
+mv _ src/support/main.cpp
+sed 's_/usr/local_/usr_g' makefile.linux > _
+
+make prefix=/usr
+
+mkdir -p "$1/usr/bin" "$1/usr/share/protrekkr"
+cp bin/protrekkr "$1/usr/bin/protrekkr"
+cp -a bin/skins "$1/usr/share/protrekkr/skins"

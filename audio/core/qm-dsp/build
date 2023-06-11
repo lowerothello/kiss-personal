@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+make -f build/linux/Makefile.linux64
+
+install -Dm644 -t "$1/usr/lib" libqm-dsp.a
+install -Dm644 -t "$1/usr/include/qm-dsp/base" base/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/chromagram" dsp/chromagram/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/keydetection" dsp/keydetection/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/mfcc" dsp/mfcc/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/onsets" dsp/onsets/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/phasevocoder" dsp/phasevocoder/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/rateconversion" dsp/rateconversion/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/rhythm" dsp/rhythm/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/segmentation" dsp/segmentation/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/signalconditioning" dsp/signalconditioning/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/tempotracking" dsp/tempotracking/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/tonal" dsp/tonal/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/transforms" dsp/transforms/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/dsp/wavelet" dsp/wavelet/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/maths" maths/*.h
+install -Dm644 -t "$1/usr/include/qm-dsp/thread" thread/*.h
+

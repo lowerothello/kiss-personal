@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+mkdir -p "$1/etc/profile.d"
+cp dotnet.sh "$1/etc/profile.d/dotnet.sh"
+rm dotnet.sh
+
+mkdir -p "$1/usr/share/dotnet"
+cp -r * "$1/usr/share/dotnet/"

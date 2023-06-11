@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+cmake -B build \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DALSOFT_REQUIRE_ALSA=ON \
+	-DALSOFT_REQUIRE_PULSEAUDIO=ON \
+	-DALSOFT_NO_CONFIG_UTIL=ON \
+	-DALSOFT_EXAMPLES=OFF
+
+cmake --build   build
+cmake --install build

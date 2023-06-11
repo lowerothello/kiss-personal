@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+cargo install \
+	--locked \
+	--no-default-features \
+	--features "jackaudio-backend,alsa-backend" \
+	--root "$DESTDIR/usr/" \
+	--path .
+
+mkdir -p "$DESTDIR/etc/sv/librespot"
+cp files/run "$DESTDIR/etc/sv/librespot/run"
+
+# clean up rust's rubbish
+rm -r "$DESTDIR/usr/.crates.toml"
+rm -r "$DESTDIR/usr/.crates2.json"

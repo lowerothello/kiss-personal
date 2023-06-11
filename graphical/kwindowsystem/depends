@@ -1,0 +1,13 @@
+cmake               make
+extra-cmake-modules make
+libICE
+libSM
+libX11
+libXext
+libXfixes
+libxcb
+qt5
+qt5-tools
+qt5-x11extras
+samurai             make
+xcb-util-keysyms

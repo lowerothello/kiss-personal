@@ -1,0 +1,20 @@
+#!/bin/sh -e
+
+export LDFLAGS="-ltinfo"
+
+./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--without-ad-dc \
+	--without-json \
+	--without-acl-support \
+	--without-ldap \
+	--disable-iprint \
+	--without-ads \
+	--without-pam \
+	--with-shared-modules='!vfs_snapper' \
+	--enable-fhs
+
+make
+make install

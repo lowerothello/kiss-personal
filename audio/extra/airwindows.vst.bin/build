@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+unzip LinuxVSTs.zip
+cd LinuxVSTs
+
+mkdir -p "$1/usr/lib/vst/airwindows.vst2"
+cp *.so "$1/usr/lib/vst/airwindows.vst2/"

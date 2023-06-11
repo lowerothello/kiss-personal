@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+sed 's/^FLAGS.*=/FLAGS = -static /' programs/Makefile > _
+mv -f _ programs/Makefile
+
+make \
+    HAVE_LZMA=0 \
+    HAVE_ZLIB=0 \
+    HAVE_LZ4=0
+
+make \
+    PREFIX=/usr \
+    install
+
+sed 's|prefix=/usr/local|prefix=/usr|' "$1/usr/lib/pkgconfig/libzstd.pc" > _
+mv _ "$1/usr/lib/pkgconfig/libzstd.pc"

@@ -1,0 +1,8 @@
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: nppicc
+Description: NVIDIA Performance Primitives - Image Processing - Color Conversion
+Version: 11.0
+Libs: -L${libdir} -lnppicc
+Cflags: -I${includedir}

@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+go mod vendor
+
+export CGO_CPPFLAGS="$CPPFLAGS"
+export CGO_CFLAGS="$CFLAGS"
+export CGO_CXXFLAGS="$CXXFLAGS"
+# export CGO_LDFLAGS="$LDFLAGS"
+# See https://bugs.archlinux.org/task/75560
+export CGO_LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
+export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw -ldflags=-linkmode=external"
+go build -tags nomsteams,whatsappmulti -v .
+
+install -Dm755 matterbridge "$1/usr/bin/matterbridge"
+install -Dm755 matterbridge.toml.sample "$1/etc/matterbridge.toml"
+install -Dm755 run "$1/etc/sv/matterbridge/run"

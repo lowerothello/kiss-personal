@@ -1,0 +1,8 @@
+meson make
+samurai make
+gtk+3
+gettext
+itstool
+gdk-pixbuf
+libX11
+glib

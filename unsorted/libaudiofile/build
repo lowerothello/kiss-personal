@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+patch -p1 < "01_gcc6.patch"
+
+./configure --prefix=/usr
+
+make
+make install

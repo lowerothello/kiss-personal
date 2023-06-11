@@ -1,0 +1,3 @@
+meson make
+vala make
+# gobject-introspection

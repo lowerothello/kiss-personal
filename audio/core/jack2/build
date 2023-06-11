@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+sed 's/rU/r/g' waflib/Context.py >_
+mv _ waflib/Context.py
+sed 's/rU/r/g' waflib/ConfigSet.py >_
+mv _ waflib/ConfigSet.py
+
+./waf configure --prefix=/usr
+
+./waf
+./waf install
+
+mkdir -p "$1/etc/sv/jackd"
+install -m644 run "$1/etc/sv/jackd/"
+install -m755 rtprio "$1/usr/bin/"

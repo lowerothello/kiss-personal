@@ -1,0 +1,6 @@
+libXau
+libxcb
+pkgconf make
+xorgproto
+xtrans  make
+libX11

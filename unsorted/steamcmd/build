@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+
+# sh script
+install -D -m755 "steamcmd" "$1/usr/bin/steamcmd"
+
+# in base folder
+install -D -m755 "steamcmd.sh" "$1/usr/share/steamcmd/steamcmd.sh"
+
+# in linux32 folder
+install -D -m755 "linux32/crashhandler.so" "$1/usr/share/steamcmd/linux32/crashhandler.so"
+install -D -m755 "linux32/libstdc++.so.6" "$1/usr/share/steamcmd/linux32/libstdc++.so.6"
+install -D -m755 "linux32/steamcmd" "$1/usr/share/steamcmd/linux32/steamcmd"
+install -D -m755 "linux32/steamerrorreporter" "$1/usr/share/steamcmd/linux32/steamerrorreporter"

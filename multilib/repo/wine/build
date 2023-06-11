@@ -1,0 +1,36 @@
+#!/bin/sh -e
+
+mkdir -p build64 build32
+
+( # 64bit build
+	cd build64
+	../configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--with-x \
+		--enable-win64
+	make
+)
+
+( # 32bit build+install
+	cd build32
+	export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+	export LD_LIBRARY_PATH=/usr/lib32
+	../configure \
+		--prefix=/usr \
+		--libdir=/usr/lib32 \
+		--with-x \
+		--with-win64=../build64
+	make
+	make prefix=/usr libdir=/usr/lib32 dlldir=/usr/lib32/wine install
+)
+
+( # 64bit install
+	cd build64
+	make prefix=/usr libdir=/usr/lib dlldir=/usr/lib/wine install
+)
+
+# Fix font aliasing for win32 programs
+mkdir -p "$1/usr/share/fontconfig/conf.avail" "$1/usr/share/fontconfig/conf.default"
+cp 30-win32-aliases.conf "$1/usr/share/fontconfig/conf.avail/30-win32-aliases.conf"
+ln -s ../conf.avail/30-win32-aliases.conf "$1/usr/share/fontconfig/conf.default/30-win32-aliases.conf"

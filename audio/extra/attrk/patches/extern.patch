@@ -1,0 +1,40 @@
+--- attrk-1.1.1.orig/src/main.c
++++ attrk-1.1.1/src/main.c
+@@ -80,13 +80,13 @@
+ //
+ struct MidiControl *p_MidiControl = NULL;
+ extern struct RecordEvent *p_REvents, *p_CurrREvents;
+-struct RecordEvent *p_Rec, *p_CurrRec;
++extern struct RecordEvent *p_Rec, *p_CurrRec;
+ 
+ //
+ //  MIDI Bank Settings
+ //
+ struct Bank *p_Banks = NULL;
+-struct Bank **pp_BankAry = NULL;
++extern struct Bank **pp_BankAry = NULL;
+ int g_Max_Bank = -1;
+ 
+ //
+--- attrk-1.1.1.orig/src/midicontrol.c
++++ attrk-1.1.1/src/midicontrol.c
+@@ -61,7 +61,7 @@
+ //  MIDI Bank Settings
+ //
+ extern struct Bank *p_Banks;
+-struct Bank **pp_BankAry;
++extern struct Bank **pp_BankAry;
+ extern int g_Max_Bank;
+ 
+ //
+--- attrk-1.1.1.orig/src/record.c
++++ attrk-1.1.1/src/record.c
+@@ -37,7 +37,7 @@
+ //
+ //  Pointers for recording
+ //
+-struct RecordEvent *p_Rec = NULL, *p_CurrRec = NULL;
++extern struct RecordEvent *p_Rec = NULL, *p_CurrRec = NULL;
+ 
+ //
+ //  Global DoLoop pointers

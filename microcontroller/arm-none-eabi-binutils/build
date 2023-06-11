@@ -1,0 +1,41 @@
+#!/bin/sh -e
+
+patch -p1 < fix-fd-issue.patch
+
+cat > makeinfo <<EOF
+#!/bin/sh
+printf 'makeinfo (GNU texinfo) 5.2\n'
+EOF
+
+chmod +x makeinfo
+export PATH=$PATH:$PWD
+
+./configure \
+    --prefix=/usr \
+    --with-lib-path=/usr/lib:/usr/local/lib \
+    --target=arm-none-eabi \
+    --enable-deterministic-archives \
+    --enable-ld=default \
+    --enable-plugins \
+    --disable-gold \
+    --disable-multilib \
+    --disable-werror \
+    --disable-gdb \
+    --disable-nls \
+    --disable-readline \
+    --disable-gprof \
+    --with-mmap
+
+make configure-host
+make tooldir=/usr
+make tooldir=/usr install
+
+for bin in ar as nm objcopy objdump ranlib strip readelf; do
+    rm "$DESTDIR"/usr/bin/${bin}
+done
+
+for info in as bfd binutils ld ; do
+    mv "$DESTDIR"/usr/share/info/${info}.info "$DESTDIR"/usr/share/info/arm-none-eabi-${info}.info
+done
+
+rm "$DESTDIR"/usr/lib/bfd-plugins/libdep.so

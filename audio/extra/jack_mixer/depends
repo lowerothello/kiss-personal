@@ -1,0 +1,7 @@
+meson build
+samurai build
+python
+jack2
+glib
+gettext
+gobject-introspection

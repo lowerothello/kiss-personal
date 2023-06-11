@@ -1,0 +1,22 @@
+python make
+jack2
+boost
+glibmm
+libsndfile
+libarchive
+taglib
+vamp-plugin-sdk
+liblo
+rubberband
+fftw
+aubio
+libxml2
+lrdf
+libsamplerate
+lv2
+serd
+sord
+sratom
+lilv
+gtkmm2
+qm-dsp

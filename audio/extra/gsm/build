@@ -1,0 +1,20 @@
+#!/bin/sh -e
+
+for patch in patches/*.patch ; do
+    patch -p0 < $patch
+done
+
+make CCFLAGS="-c ${CFLAGS} -fPIC"
+
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/lib"
+mkdir -p "$DESTDIR/usr/include/gsm"
+mkdir -p "$DESTDIR/usr/share/gsm"
+mkdir -p "$DESTDIR/usr/share/man/man1"
+mkdir -p "$DESTDIR/usr/share/man/man3"
+
+make -j1 INSTALL_ROOT="$DESTDIR/usr" \
+    GSM_INSTALL_INC="$DESTDIR/usr/include/gsm" \
+    GSM_INSTALL_MAN="$DESTDIR/usr/share/man/man3" \
+    TOAST_INSTALL_MAN="$DESTDIR/usr/share/man/man1" \
+    install

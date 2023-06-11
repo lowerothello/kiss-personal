@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+cd src
+make targets
+make INSTALL_PLUGINS_DIR="${DESTDIR}/usr/lib/ladspa/" \
+     INSTALL_INCLUDE_DIR="${DESTDIR}/usr/include" \
+     INSTALL_BINARY_DIR="${DESTDIR}/usr/bin" \
+     install
+install -vDm 644 ../doc/*.html -t "${DESTDIR}/usr/share/doc/ladspa"
+install -vDm 644 ../doc/*.txt -t "${DESTDIR}/usr/share/doc/ladspa"

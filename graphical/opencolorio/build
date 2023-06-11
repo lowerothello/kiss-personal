@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+# patch -p1 < cmake.patch
+
+# sed -i "s/-Werror//g" src/core/CMakeLists.txt
+# sed -i "s/-Werror//g" src/pyglue/CMakeLists.txt
+# sed -i "s/push(hidden)/push(default)/g" src/core/OCIOYaml.cpp
+
+export _IMPORT_PREFIX=/usr
+cmake -B build \
+	-GNinja \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DCMAKE_BUILD_TYPE=Release
+
+ninja -C build
+ninja -C build install

@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --enable-shared
+
+make
+make DESTDIR="$DESTDIR" install
+
+cd doc
+make DESTDIR="$DESTDIR" install

@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+rm -rf po
+
+cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTING=OFF \
+    -G Ninja
+
+    # -DCMAKE_INSTALL_LIBDIR=lib \
+    # -DCMAKE_BUILD_TYPE=Release \
+
+ninja -C build
+ninja -C build install

@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+git submodule init
+git config submodule.external/supercop.url "supercop"
+git config submodule.external/miniupnp.url "miniupnp"
+git config submodule.external/rapidjson.url "rapidjson"
+git config submodule.external/trezor-common.url "trezor-common"
+git config submodule.external/randomx.url "randomx"
+git -c protocol.file.allow=always submodule update
+
+cmake . \
+	-DCMAKE_INSTALL_PREFIX=/usr
+
+make
+make install
+
+mkdir -p "$1/etc/sv/monero" "$1/etc"
+cp files/run "$1/etc/sv/monero/run"
+cp utils/conf/monerod.conf "$1/etc/monerod.conf"

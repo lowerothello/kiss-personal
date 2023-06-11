@@ -1,0 +1,43 @@
+#!/bin/sh -e
+
+sed 's/nvccflags_default="-gencode arch=compute_30,code=sm_30 -O2"/nvccflags_default="-gencode arch=compute_52,code=sm_52 -O2"/' configure > _
+mv _ configure
+sed 's/nvccflags_default="--cuda-gpu-arch=sm_30 -O2"/nvccflags_default="--cuda-gpu-arch=sm_52 -O2"/g' configure > _
+mv _ configure
+chmod +x configure
+
+./configure \
+	--cc="${CC:-cc}" \
+	--cxx="${CXX:-c++}" \
+	--prefix=/usr \
+	--disable-debug \
+	--disable-libxml2 \
+	--disable-static \
+	--enable-gpl \
+	--enable-libass \
+	--enable-libdrm \
+	--enable-libmp3lame \
+	--enable-libopus \
+	--enable-libvorbis \
+	--enable-libvpx \
+	--enable-libwebp \
+	--enable-libx264 \
+	--enable-libx265 \
+	--enable-libxvid \
+	--enable-nonfree \
+	--enable-openssl \
+	--enable-shared \
+	--enable-version3 \
+	--enable-nvenc \
+	--enable-libjack \
+	--enable-nonfree \
+	--enable-libnpp \
+	--enable-cuda-nvcc \
+	--extra-cflags=-I/usr/local/cuda/include \
+	--extra-ldflags=-L/usr/local/cuda/lib64 \
+	--x86asmexe=nasm
+
+make
+make install
+
+rm -rf "$1/usr/share/ffmpeg/examples"

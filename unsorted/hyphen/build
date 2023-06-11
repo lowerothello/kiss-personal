@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr \
+	--disable-static
+
+make
+make DESTDIR="$1" install-libLTLIBRARIES
+make DESTDIR="$1" install-binSCRIPTS
+make DESTDIR="$1" install-includeHEADERS
+make DESTDIR="$1" install-hyphDATA

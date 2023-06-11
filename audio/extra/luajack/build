@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+export PREFIX="$1/usr"
+export LUAVER=5.4
+make
+make install

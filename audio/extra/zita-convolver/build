@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+cd source
+sed 's/ldconfig$//g' Makefile > _
+mv _ Makefile
+make
+make PREFIX=/usr LIBDIR=/usr/lib install

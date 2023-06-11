@@ -1,0 +1,5 @@
+meson build
+samurai build
+vamp-plugin-sdk
+ladspa
+libsndfile

@@ -1,0 +1,14 @@
+jack2
+ffmpeg
+freetype-harfbuzz
+libXScrnSaver
+libXinerama
+libXrandr
+libXpresent
+libass
+libxkbcommon
+linux-headers make
+mesa
+pkgconf make
+python  make
+luajit

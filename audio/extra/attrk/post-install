@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+echo "a file named '.attrkrc' must be present in the cwd for attrk to start!"

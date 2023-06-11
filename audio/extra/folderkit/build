@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+make
+
+mkdir -p "$1/usr/bin" "$1/usr/share/doc/folderkit"
+cp bin/folderkit "$1/usr/bin/folderkit"
+cp user_guide/* "$1/usr/share/doc/folderkit/"

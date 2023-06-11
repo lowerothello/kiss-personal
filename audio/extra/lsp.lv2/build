@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+make clean
+make BUILD_MODULES=lv2 PREFIX=/usr
+make install

@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+make DESTDIR="$1" install
+
+install -Dm755 steam-runtime.sh "$1/usr/bin/steam-runtime"
+
+mkdir -p "$1/usr/lib/steam"
+mv "$1/usr/bin/steam" "$1/usr/lib/steam/steam"
+ln -sf /usr/bin/steam-runtime "$1/usr/bin/steam"
+
+ln -sf /usr/bin/true "$1/usr/bin/steamdeps" # avoid apt-get
+
+# better bin_steam.sh
+sed -e 's|readlink -e -q|readlink|;s|tar xJf|tar xf|' "$1/usr/lib/steam/bin_steam.sh" >_
+chmod +x _
+mv _ "$1/usr/lib/steam/bin_steam.sh"
+
+
+# udev rules
+sed -r 's|("0666")|"0660", TAG+="uaccess"|g' subprojects/steam-devices/60-steam-input.rules >_; mv _ subprojects/steam-devices/60-steam-input.rules
+sed -r 's|("misc")|\1, OPTIONS+="static_node=uinput"|g' subprojects/steam-devices/60-steam-input.rules >_; mv _ subprojects/steam-devices/60-steam-input.rules
+sed -r 's|(, TAG\+="uaccess")|, MODE="0660"\1|g' subprojects/steam-devices/60-steam-vr.rules >_; mv _ subprojects/steam-devices/60-steam-vr.rules
+
+install -Dm644 subprojects/steam-devices/60-steam-input.rules "$1/usr/lib/udev/rules.d/70-steam-input.rules"
+install -Dm644 subprojects/steam-devices/60-steam-vr.rules "$1/usr/lib/udev/rules.d/70-steam-vr.rules"

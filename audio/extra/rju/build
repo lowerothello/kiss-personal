@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+# runit service for rju-plumbing
+mkdir -p "$1/etc/sv/rju-plumbing"
+cp run "$1/etc/sv/rju-plumbing/run"
+
+cd cmd/r-common/c
+make
+
+cd ../..
+make rju-plumbing
+
+mkdir -p "$1/usr/bin"
+
+# can't install all the programs cos this doesn't build them all, expected failure
+make prefix="$1/usr" install ||:

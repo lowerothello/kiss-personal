@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+mkdir -p $DESTDIR/usr/bin
+cp init poweroff reboot $DESTDIR/usr/bin/

@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+cat << EOF
+
+The files "/etc/jackuser" and "/etc/jackdrc" should be
+populated! This is the cleanest way I can come up with
+to configure jack.
+
+Due to the lack of pam, rootless realtime privaledges
+need some extra work; this package provides the script
+/usr/bin/rtprio that uses su to escalate a prlimit call,
+and then execs into \$@. Run any program that needs
+realtime privaledges within this wrapper!
+
+EOF

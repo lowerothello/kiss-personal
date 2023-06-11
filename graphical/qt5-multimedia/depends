@@ -1,0 +1,6 @@
+alsa-lib
+gst-plugins-base
+gstreamer
+perl make
+qt5
+qt5-declarative

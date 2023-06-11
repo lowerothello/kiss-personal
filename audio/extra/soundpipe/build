@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+# hard coded prefix
+patch -p1 < sp.patch
+
+make
+make install

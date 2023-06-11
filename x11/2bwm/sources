@@ -1,0 +1,9 @@
+#https://github.com/venam/2bwm/archive/vVERSION.tar.gz
+files/2bwm.c
+files/2bwm.man
+files/Makefile
+files/definitions.h
+files/hidden.c
+files/hidden.man
+files/list.h
+files/types.h

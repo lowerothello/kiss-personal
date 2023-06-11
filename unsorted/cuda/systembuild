@@ -1,0 +1,64 @@
+#!/bin/sh -e
+
+sh *.run --target . --noexec
+
+cd builds
+
+mv cuda_cupti/extras/CUPTI .
+mv cuda_nvvp/libnvvp/nvvp cuda_nvvp/bin/
+mv cuda_nvcc/nvvm .
+
+find . -type l -exec rm {} +
+
+rm -rf \
+	bin \
+	*.run \
+	*.txt \
+	version.json \
+	cuda_sanitizer_api \
+	integration \
+	nsight_compute \
+	nsight_systems \
+	cuda_documentation \
+	cuda_samples \
+	cuda_nsight \
+	cuda_cupti \
+	cuda_demo_suite \
+	cuda_gdb \
+	cuda_nvml_dev/nvml \
+	cuda_nvvp/libnvvp \
+	nvvm/libnvvm-samples \
+	libcublas/cublas_version.txt \
+	nvvm/libdevice \
+	CUPTI/samples \
+	CUPTI/doc \
+	*/src
+
+mkdir "$1/usr"
+cp -r */* "$1/usr"
+
+mv "$1/usr/lib64" "$1/usr/lib"
+
+cp -r "$1/usr/targets/x86_64-linux/include/"* "$1/usr/include/"
+cp -r "$1/usr/targets/x86_64-linux/lib/"* "$1/usr/lib/"
+
+rm -r \
+	"$1/usr/targets"
+
+# allow newer compilers to work
+sed "/.*unsupported GNU version.*/d" "$1/usr/include/crt/host_config.h" > _
+mv _ "$1/usr/include/crt/host_config.h"
+sed "/.*unsupported clang version.*/d" "$1/usr/include/crt/host_config.h" > _
+mv _ "$1/usr/include/crt/host_config.h"
+
+for f in $(find "$1/usr" -name Makefile)
+do
+	sed "s|/usr/local/cuda|/usr|g" "$f" > _
+	mv _ "$f"
+done
+
+# mkdir -p "$1/etc/profile.d"
+# cp cuda_path.sh "$1/etc/profile.d/"
+
+mkdir -p "$1/usr/lib/pkgconfig"
+cp ../*.pc "$1/usr/lib/pkgconfig/"

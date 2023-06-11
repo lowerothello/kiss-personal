@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr \
+	--enable-shared \
+	--with-system-libunwind
+
+make
+make install

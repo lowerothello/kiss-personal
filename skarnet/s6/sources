@@ -1,0 +1,2 @@
+https://skarnet.org/software/s6/s6-VERSION.tar.gz
+git+https://github.com/flexibeast/s6-man-pages doc

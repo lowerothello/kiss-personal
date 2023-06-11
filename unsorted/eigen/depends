@@ -1,0 +1,6 @@
+boost
+cmake   make
+fftw
+gmp
+mpfr
+samurai make

@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+cmake -Bbuild \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release
+
+make -Cbuild
+make -Cbuild install
+# ln -s darktable/libdarktable.so "$1/usr/lib/libdarktable.so"

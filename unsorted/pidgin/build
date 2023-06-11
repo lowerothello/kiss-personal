@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr \
+	--disable-gtkui \
+	--disable-screensaver \
+	--disable-sm \
+	--disable-startup-notification \
+	--disable-gtkspell \
+	--disable-gevolution \
+	--disable-gestures \
+	--disable-gstreamer \
+	--disable-doxygen \
+	--disable-meanwhile \
+	--disable-avahi \
+	--disable-dbus \
+	--disable-nls \
+	--disable-vv \
+	--disable-idn \
+	--disable-tcl \
+	--disable-cyrus-sasl \
+	--with-system-ssl-certs=/etc/ssl/certs
+
+make
+make install

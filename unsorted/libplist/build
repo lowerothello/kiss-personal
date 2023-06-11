@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+./configure \
+	--prefix=/usr
+
+sed -i -e 's/ -shared / -Wl,-lm,--as-needed\0/g' libtool
+
+make
+make install
