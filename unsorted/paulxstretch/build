@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+cmake -Bbuild \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=/usr
+
+cmake --build build
+
+ls build
+cd build/PaulXStretch_artefacts/Release
+install -Dm755 Standalone/* -t "$1/usr/bin"

@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+echo "$2" > .dist-version
+./autogen
+
+LDFLAGS="$LDFLAGS -ltinfow" \
+./configure \
+	--prefix=/usr \
+	--disable-start-stop-daemon
+
+make
+make install

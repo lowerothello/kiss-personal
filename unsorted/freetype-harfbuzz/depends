@@ -13,3 +13,4 @@ libxshmfence
 meson   make
 pixman
 pkgconf make
+brotli

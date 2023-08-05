@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+patch -p1 < ignore_unused_submodules.patch
+
 mkdir -p build
 cd build
 
@@ -20,14 +22,16 @@ cd build
 cmake .. \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DENABLE_WAYLAND=OFF \
-	-DDISABLE_PULSEAUDIO=ON \
+	-DENABLE_PULSEAUDIO=OFF \
 	-DENABLE_PIPEWIRE=OFF \
-	-DDISABLE_VLC=ON \
 	-DBUILD_VST=OFF \
-	-DDISABLE_SPEEXDSP=ON \
-	-DDISABLE_AJA=ON \
+	-DENABLE_AJA=OFF \
 	-DENABLE_V4L2=ON \
-	-DBUILD_BROWSER=OFF
+	-DENABLE_BROWSER=OFF \
+	-DENABLE_VLC=OFF \
+	-DENABLE_JACK=ON \
+	-DENABLE_NEW_MPEGTS_OUTPUT=OFF \
+	-DENABLE_SPEEXDSP=OFF
 
 make
 make install
